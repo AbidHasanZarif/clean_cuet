@@ -61,7 +61,6 @@
       border-radius: 4px;
       cursor: pointer;
       transition: opacity 0.3s;
-      /* box-shadow:5px 5px 0px; */
     }
     .login:hover {
       background-color: #07c214;
@@ -69,7 +68,7 @@
     }
     .login:active {
       background-color: #07c214;
-        opacity: 0.6;
+      opacity: 0.6;
     }
     .signin {
       background-color:#07c214;
@@ -88,7 +87,7 @@
     }
     .signin:active {
       background-color: #07c214;
-        opacity: 0.6;
+      opacity: 0.6;
     }
     .signup{
       background-color:#07c214;
@@ -107,9 +106,8 @@
     }
     .signup:active {
       background-color: #07c214;
-        opacity: 0.6;
+      opacity: 0.6;
     }
-
     .login2{
       background-color:#07c214;
       color: white;
@@ -127,7 +125,7 @@
     }
     .login2:active {
       background-color: #07c214;
-        opacity: 0.6;
+      opacity: 0.6;
     }
   </style>
 </head>
@@ -138,10 +136,10 @@
     <h2>Student Login</h2>
     <input type="tel" id="loginPhone" placeholder="Phone Number" required />
     <input type="password" id="loginPassword" placeholder="Password" required />
-    <button class= "login" onclick="handleLogin()">Login</button>
+    <button class="login" onclick="handleLogin()">Login</button>
     <p id="error" style="color:red;"></p> 
     <div class="nav-buttons">
-      <p>Not a memeber yet?<button class = "signin" onclick="showSignup()">Sign Up</button></p>
+      <p>Not a member yet?<button class="signin" onclick="showSignup()">Sign Up</button></p>
     </div>
   </div>
 
@@ -149,8 +147,7 @@
   <div class="container hidden" id="signupForm">
     <h2>Student Sign Up</h2>
     <input type="text" id="signupName" placeholder="Full Name" required />
-    <!-- <input type="text" id="signupVarsity" placeholder="University Name" required /> -->
-     <select id="signupUniversity" required>
+    <select id="signupUniversity" required>
       <option value="">Select University</option>
       <option value="CUET">Chittagong University of Enginnering & Technology</option>
       <option value="BUET">Bangladesh University of Enginnering & Technology</option>
@@ -160,31 +157,28 @@
     </select>
     <input type="tel" id="signupPhone" placeholder="Phone Number" required />
     <input type="email" id="signupEmail" placeholder="Gmail" required />
- 
-
-<select id="signupDepartment" required>
-  <option value="">Select Department</option>
-  <option value="CSE">CSE</option>
-  <option value="EEE">EEE</option>
-  <option value="ME">ME</option>
-  <option value="CE">CE</option>
-  <option value="ITE">ETE</option>
-  <option value="PME">PME</option>
-  <option value="WRE">WRE</option>
-  <option value="ARCHI">ARCHI</option>
-  <option value="URP">URP</option>
-  <option value="MSE">MSE</option>
-  <option value="MIE">MIE</option>
-</select>
-
-<select id="signupHall" required>
-  <option value="">Select Hall</option>
-  <option value="Shaheed Mohammed Shah Hall">Shaheed Mohammed Shah Hall</option>
-  <option value="Kazi Nazrul Islam Hall">Kazi Nazrul Islam Hall</option>
-  <option value="Shaheed Tareq Huda Hall">Shaheed Tareq Huda Hall</option>
-  <option value="QK Hall">Qudrat-e Khuda Hall</option>
-  <option value="Shaheed Abu Shayed Hall">Shaheed Abu Shayed Hall</option>
-</select>
+    <select id="signupDepartment" required>
+      <option value="">Select Department</option>
+      <option value="CSE">CSE</option>
+      <option value="EEE">EEE</option>
+      <option value="ME">ME</option>
+      <option value="CE">CE</option>
+      <option value="ITE">ETE</option>
+      <option value="PME">PME</option>
+      <option value="WRE">WRE</option>
+      <option value="ARCHI">ARCHI</option>
+      <option value="URP">URP</option>
+      <option value="MSE">MSE</option>
+      <option value="MIE">MIE</option>
+    </select>
+    <select id="signupHall" required>
+      <option value="">Select Hall</option>
+      <option value="Shaheed Mohammed Shah Hall">Shaheed Mohammed Shah Hall</option>
+      <option value="Kazi Nazrul Islam Hall">Kazi Nazrul Islam Hall</option>
+      <option value="Shaheed Tareq Huda Hall">Shaheed Tareq Huda Hall</option>
+      <option value="QK Hall">Qudrat-e Khuda Hall</option>
+      <option value="Shaheed Abu Shayed Hall">Shaheed Abu Shayed Hall</option>
+    </select>
     <select id="signupBloodGroup" required>
       <option value="">Select Blood Group</option>
       <option value="A+">A+</option>
@@ -197,9 +191,9 @@
       <option value="O-">O-</option>
     </select>
     <input type="password" id="signupPassword" placeholder="Password" required />
-    <button class = "signup" onclick="handleSignup()">Sign Up</button>
+    <button class="signup" onclick="handleSignup()">Sign Up</button>
     <div class="nav-buttons">
-      <p>Already have an account? <button class = "login2" onclick="showLogin()">Login</button></p>
+      <p>Already have an account? <button class="login2" onclick="showLogin()">Login</button></p>
     </div>
   </div>
 
@@ -216,43 +210,25 @@
   </div>
 
   <script>
-    
-    // Temporary storage for registered users
-    const users = [
-  {
-    name: "John Doe",
-    phone: "1234567890",
-    password: "111",
-    varsity: "CUET",
-    email: "john@example.com",
-    department: "CSE",
-    hall: "North Hall",
-    bloodGroup: "A+"
-  },
-  // Add more users here...
-];
-
-
     function showLogin() {
       document.getElementById('signupForm').classList.add('hidden');
       document.getElementById('loginForm').classList.remove('hidden');
-  
     }
+    
     function showSignup() {
       document.getElementById('loginForm').classList.add('hidden');
       document.getElementById('signupForm').classList.remove('hidden');
     }
 
-    function handleSignup() {
-    const name = document.getElementById('signupName').value.trim();
-    const varsity = document.getElementById('signupUniversity').value.trim();
-    const phone = document.getElementById('signupPhone').value.trim();
-    const email = document.getElementById('signupEmail').value.trim();
-    const department = document.getElementById('signupDepartment').value.trim();
-    const hall = document.getElementById('signupHall').value.trim();
-    const bloodGroup = document.getElementById('signupBloodGroup').value.trim();
-    const password = document.getElementById('signupPassword').value.trim();
-;
+    async function handleSignup() {
+      const name = document.getElementById('signupName').value.trim();
+      const varsity = document.getElementById('signupUniversity').value.trim();
+      const phone = document.getElementById('signupPhone').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+      const department = document.getElementById('signupDepartment').value.trim();
+      const hall = document.getElementById('signupHall').value.trim();
+      const bloodGroup = document.getElementById('signupBloodGroup').value.trim();
+      const password = document.getElementById('signupPassword').value.trim();
 
       // Basic validation
       if (!name || !varsity || !phone || !email || !department || !hall || !bloodGroup || !password) {
@@ -260,42 +236,74 @@
         return;
       }
 
-      // Check if user already exists
-      const existingUser = users.find(user => user.phone === phone);
-      if (existingUser) {
-        alert('User with this phone number already exists.');
-        return;
+      try {
+        const response = await fetch('http://localhost:5000/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name,
+            varsity,
+            phone,
+            email,
+            department,
+            hall,
+            bloodGroup,
+            password
+          }),
+        });
+
+        const data = await response.json();
+        
+        if (response.ok) {
+          alert('Signup successful! Please log in.');
+          showLogin();
+        } else {
+          alert(data.msg || 'Signup failed');
+        }
+      } catch (err) {
+        console.error('Error:', err);
+        alert('An error occurred during signup');
       }
-
-      // Store user data
-      users.push({ name, varsity, phone, email, department, hall, bloodGroup, password });
-
-      alert('Signup successful! Please log in.');
-      showLogin();
     }
 
-    function handleLogin() {
-  const phone = document.getElementById('loginPhone').value.trim();
-  const password = document.getElementById('loginPassword').value.trim();
+    async function handleLogin() {
+      const phone = document.getElementById('loginPhone').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
 
+      try {
+        const response = await fetch('http://localhost:5000/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ phone, password }),
+        });
 
-  const user = users.find(user => user.phone === phone && user.password === password);
+        const data = await response.json();
+        
+        if (response.ok) {
+          // Store user data and token
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('currentUser', JSON.stringify(data.user));
+          
+          // Redirect to home page
+          window.location.href = "cleancuet.html";
+        } else {
+          document.getElementById('error').textContent = data.msg || 'Login failed';
+        }
+      } catch (err) {
+        console.error('Error:', err);
+        document.getElementById('error').textContent = 'An error occurred during login';
+      }
+    }
 
-  if (user) {
-    // Store the user info so cleancuet.html can access it
-    localStorage.setItem('currentUser', JSON.stringify(user));
-
-    // Redirect to home page
-    window.location.href = "cleancuet.html";
-  } else {
-    alert('Invalid phone number or password.');
-  }
-}
-function logout() {
-  localStorage.removeItem('currentUser');
-  window.location.href = "login.html";  // Redirect user back to login page
-}
-
+    function logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('currentUser');
+      window.location.href = "login.html";
+    }
   </script>
 
 </body>
