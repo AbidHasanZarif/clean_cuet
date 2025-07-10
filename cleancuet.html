@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 
+    <!-- here the copy paste started -->
+     
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CUET CleanCampus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f9ff;
+        }
+        .report-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .camera-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
+        }
+        #videoElement {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        #canvas {
+            display: none;
+        }
+        .photo-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 0.5rem;
+        }
+          .Menu {
+    /* Example customizations */
+    background-color: rgba(255, 255, 255, 0.9); /* slight transparency */
+    border-right: 2px solid #4ade80; /* green border */
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 500;
+    backdrop-filter: blur(8px);
+  }
+
+  .Menu button {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .Menu button:hover {
+    background-color: #d1fae5; /* Tailwind green-100 */
+    color: #065f46; /* Tailwind green-700 */
+  }
+    </style>
+</head>
+<body>
+    <div id="welcomeInfo" style="display:none;">
+    <h2>Welcome, <span id="studentName"></span>!</h2>
+    <p><strong>University:</strong> <span id="studentVarsity"></span></p>
+    <p><strong>Phone:</strong> <span id="studentPhone"></span></p>
+    <p><strong>Email:</strong> <span id="studentEmail"></span></p>
+    <p><strong>Department:</strong> <span id="studentDepartment"></span></p>
+    <p><strong>Hall:</strong> <span id="studentHall"></span></p>
+    <p><strong>Blood Group:</strong> <span id="studentBloodGroup"></span></p>
+
+    <button onclick="logout()">LOGOUT</button>
+  </div>
+    <header class="bg-gradient-to-r from-green-600 to-teal-500 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    
+                    <!-- Toggle Menu Button -->
+<button id="menuToggle" class="fixed top-[42px] left-4 z-50 p-2 bg-green-600 text-white rounded focus:outline-none flex flex-col justify-center items-center space-y-1 hover:bg-green-700">
+  <span class="block w-8 h-[3px] bg-white"></span>
+  <span class="block w-8 h-[3px] bg-white"></span>
+  <span class="block w-8 h-[3px] bg-white"></span>
+</button>
+
+
+<!-- Sidebar -->
+<div id="sidebar" class="fixed top-[60px] left-0 h-full w-64 bg-transparent transform -translate-x-full transition-transform duration-300 z-40">
+  <div class="p-4 shadow-lg border-b flex justify-between items-center">
+    <h2 class="text-lg font-semibold">MENU</h2>
+    <button id="closeSidebar" class="text-lg px-2 py-2 bg-red-500 font-bold">x</button>
+  </div>
+  <ul class="p-4 space-y-2 shadow-lg">
+    <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">Dashboard</button></li>
+    <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">Profile</button></li>
+    <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">Rewards</button></li>
+    <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">View Campus</button></li>
+    <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">Volunteer Hub</button></li>
+    <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">History</button></li>
+    <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">Settings</button></li>
+    <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">About us</button></li>
+    <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">Contact us</button></li>
+    <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded flex items-center space-x-2">
+      <svg class="w-4 h-4" fill="currentColor"><use href="#icon-facebook" /></svg>
+      <span>Join our community</span>
+    </button></li>
+  </ul>
+</div>
+
+                    <h1 class="text-2xl font-bold">CUET CleanCampus</h1>
+                </div>
+               <!-- Navigation -->
+               <nav class="p-4 flex justify-center space-x-4 bg-transparent">
+  <button id="homeBtn" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Home</button>
+  <button id="reportBtn" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Report</button>
+  <button id="volunteerBtn" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Volunteer</button>
+  <button onclick="logout()" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Logout</button>
+</nav>
+
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Home Section -->
+        <section id="homeSection" class="mb-10">
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Keep CUET Clean Together!</h2>
+                <p class="text-gray-600 mb-6">Help maintain our beautiful campus by reporting areas that need cleaning. Volunteers can sign up to help clean reported areas.</p>
+                <div class="flex flex-wrap gap-4">
+                    <button id="reportBtnHome" class="bg-teal-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-md transition duration-300 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        Report Unclean Area
+                    </button>
+                    <button id="volunteerBtnHome" class="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-6 rounded-md transition duration-300 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        Volunteer to Clean
+                    </button>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Recent Reports</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="reportsContainer">
+                <!-- Reports will be dynamically added here -->
+            </div>
+        </section>
+
+        <!-- Report Section -->
+        <section id="reportSection" class="hidden">
+            <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6">Report Unclean Area</h2>
+                <form id="reportForm" class="space-y-6">
+                    <div>
+                        <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                        <select id="location" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500">
+                            <option value="">Select location</option>
+                            <option value="Academic Building 1">Academic Building 1</option>
+                            <option value="Academic Building 2">Academic Building 2</option>
+                            <option value="Library">Library</option>
+                            <option value="Cafeteria">Cafeteria</option>
+                            <option value="Student Center">Student Center</option>
+                            <option value="Dormitory Area">Dormitory Area</option>
+                            <option value="Sports Complex">Central Field</option>
+                            <!-- <option value="Garden Area">Garden Area</option> -->
+                            <option value="Parking Lot">Shaheed Mohammed Shah Hall</option>
+                            <option value="Parking Lot">Kazi Nazrul Islam Hall</option>
+                            <option value="Parking Lot">Shaheed Tareq Huda Hall</option>
+                            <option value="Parking Lot">Qudrat-e Khuda Hall</option>
+                            <option value="Parking Lot">Parking Lot</option>
+                            <option value="Other">Other(specify in description)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <textarea id="description" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500" placeholder="Describe the issue..."></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Photo</label>
+                        <div class="camera-container h-64 bg-gray-100 border-2 border-dashed border-gray-300 rounded-md flex flex-col items-center justify-center">
+                            <div id="cameraPlaceholder" class="text-center p-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                <p class="mt-2 text-sm text-gray-500">Click to take a photo</p>
+                            </div>
+                            <video id="videoElement" class="hidden"></video>
+                            <canvas id="canvas"></canvas>
+                            <img id="photoPreview" class="hidden photo-preview" />
+                        </div>
+                        <div class="flex justify-center mt-2 space-x-3">
+                            <button type="button" id="startCamera" class="text-sm bg-gray-200 hover:bg-gray-300 text-gray-800 py-1 px-3 rounded">
+                                Start Camera
+                            </button>
+                            <button type="button" id="capturePhoto" class="hidden text-sm bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded">
+                                Capture
+                            </button>
+                            <button type="button" id="retakePhoto" class="hidden text-sm bg-gray-200 hover:bg-gray-300 text-gray-800 py-1 px-3 rounded">
+                                Retake
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" id="cancelReport" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100">
+                            Cancel
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md">
+                            Submit Report
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Volunteer Section -->
+        <section id="volunteerSection" class="hidden">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Volunteer Opportunities</h2>
+                    <p class="text-gray-600 mb-6">Join other students and staff to help keep our campus clean. Select a reported area below to volunteer for cleanup.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="volunteerReportsContainer">
+                    <!-- Volunteer opportunities will be dynamically added here -->
+                </div>
+            </div>
+        </section>
+        
+
+        <!-- Report Detail Modal -->
+        <div id="reportDetailModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-semibold text-gray-800" id="modalTitle">Report Details</h3>
+                        <button id="closeModal" class="text-gray-500 hover:text-gray-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="modalContent" class="space-y-4">
+                        <div class="aspect-w-16 aspect-h-9 mb-4">
+                            <img id="modalImage" class="rounded-lg object-cover w-full h-64" src="" alt="Report image">
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-500">Location</h4>
+                            <p id="modalLocation" class="text-gray-800"></p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-500">Description</h4>
+                            <p id="modalDescription" class="text-gray-800"></p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-500">Reported by</h4>
+                            <p id="modalReporter" class="text-gray-800"></p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-500">Date</h4>
+                            <p id="modalDate" class="text-gray-800"></p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-500">Status</h4>
+                            <p id="modalStatus" class="text-gray-800"></p>
+                        </div>
+                        <div id="modalVolunteers">
+                            <h4 class="text-sm font-medium text-gray-500">Volunteers</h4>
+                            <ul id="volunteersList" class="list-disc pl-5 text-gray-800"></ul>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex justify-end">
+                        <button id="volunteerForCleanup" class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition duration-300">
+                            Volunteer for Cleanup
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Notification -->
+        <div id="notification" class="fixed bottom-4 right-4 bg-green-600 text-white px-6 py-3 rounded-md shadow-lg transform transition-transform duration-300 translate-y-20 opacity-0 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+            <span id="notificationMessage">Success!</span>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h3 class="text-lg font-semibold">CUET CleanCampus</h3>
+                    <p class="text-gray-400 text-sm">Making our university cleaner together</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white">About</a>
+                    <a href="#" class="text-gray-400 hover:text-white">Contact</a>
+                    <a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a>
+                </div>
+            </div>
+            <div class="mt-6 text-center text-gray-400 text-sm">
+                &copy; 2025 CUET CleanCampus. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+
+
+const user = JSON.parse(localStorage.getItem('currentUser'));
+
+    if (!user) {
+      window.location.href = "login.html"; // Redirect if not logged in
+    } else {
+      document.getElementById('studentName').textContent = user.name;
+      document.getElementById('studentVarsity').textContent = user.varsity;
+      document.getElementById('studentPhone').textContent = user.phone;
+      document.getElementById('studentEmail').textContent = user.email;
+      document.getElementById('studentDepartment').textContent = user.department;
+      document.getElementById('studentHall').textContent = user.hall;
+      document.getElementById('studentBloodGroup').textContent = user.bloodGroup;
+    }
+
+const sidebar = document.getElementById('sidebar');
+  const toggle = document.getElementById('menuToggle');
+  const closeBtn = document.getElementById('closeSidebar');
+
+  toggle.addEventListener('click', () => {
+    sidebar.classList.remove('-translate-x-full');
+  });
+
+  closeBtn.addEventListener('click', () => {
+    sidebar.classList.add('-translate-x-full');
+  });
+
+  // Optional: click outside to close
+  document.addEventListener('click', (e) => {
+    if (!sidebar.contains(e.target) && !toggle.contains(e.target)) {
+      sidebar.classList.add('-translate-x-full');
+    }
+  })
+
+    function logout() {
+      localStorage.removeItem('currentUser');
+      window.location.href = "login.html";
+    }
+        // Sample data for reports
+        const sampleReports = [
+            {
+                id: 1,
+                location: 'Academic Building 1',
+                description: 'Trash near the entrance needs to be cleaned up.',
+                reporter: 'Ahmed H.',
+                date: '2023-10-15',
+                status: 'Pending',
+                volunteers: ['Fatima K.'],
+                image: createSampleSVG('Academic Building', '#f97316')
+            },
+            {
+                id: 2,
+                location: 'Cafeteria',
+                description: 'Food waste and plastic bottles scattered around the outdoor seating area.',
+                reporter: 'Maryam J.',
+                date: '2023-10-14',
+                status: 'In Progress',
+                volunteers: ['Rahul S.', 'Priya M.', 'Omar T.'],
+                image: createSampleSVG('Cafeteria', '#0ea5e9')
+            },
+            {
+                id: 3,
+                location: 'Garden Area',
+                description: 'Paper waste and plastic bags near the benches.',
+                reporter: 'Zainab A.',
+                date: '2023-10-13',
+                status: 'Pending',
+                volunteers: [],
+                image: createSampleSVG('Garden', '#22c55e')
+            }
+        ];
+
+        // DOM Elements
+        const homeSection = document.getElementById('homeSection');
+        const reportSection = document.getElementById('reportSection');
+        const volunteerSection = document.getElementById('volunteerSection');
+        const reportsContainer = document.getElementById('reportsContainer');
+        const volunteerReportsContainer = document.getElementById('volunteerReportsContainer');
+        const reportForm = document.getElementById('reportForm');
+        const reportDetailModal = document.getElementById('reportDetailModal');
+        const notification = document.getElementById('notification');
+
+        // Navigation
+        document.getElementById('homeBtn').addEventListener('click', showHomeSection);
+        document.getElementById('reportBtn').addEventListener('click', showReportSection);
+        document.getElementById('volunteerBtn').addEventListener('click', showVolunteerSection);
+        document.getElementById('reportBtnHome').addEventListener('click', showReportSection);
+        document.getElementById('volunteerBtnHome').addEventListener('click', showVolunteerSection);
+        document.getElementById('cancelReport').addEventListener('click', showHomeSection);
+        document.getElementById('closeModal').addEventListener('click', closeModal);
+
+        // Camera functionality
+        const videoElement = document.getElementById('videoElement');
+        const canvas = document.getElementById('canvas');
+        const photoPreview = document.getElementById('photoPreview');
+        const startCameraBtn = document.getElementById('startCamera');
+        const capturePhotoBtn = document.getElementById('capturePhoto');
+        const retakePhotoBtn = document.getElementById('retakePhoto');
+        const cameraPlaceholder = document.getElementById('cameraPlaceholder');
+        let stream = null;
+
+        startCameraBtn.addEventListener('click', startCamera);
+        capturePhotoBtn.addEventListener('click', capturePhoto);
+        retakePhotoBtn.addEventListener('click', retakePhoto);
+        cameraPlaceholder.addEventListener('click', startCamera);
+
+        // Form submission
+        reportForm.addEventListener('submit', handleReportSubmit);
+
+        // Initialize the app
+        initializeApp();
+
+        function initializeApp() {
+            displayReports();
+            displayVolunteerOpportunities();
+        }
+
+        function showHomeSection() {
+            homeSection.classList.remove('hidden');
+            reportSection.classList.add('hidden');
+            volunteerSection.classList.add('hidden');
+            stopCamera();
+        }
+
+        function showReportSection() {
+            homeSection.classList.add('hidden');
+            reportSection.classList.remove('hidden');
+            volunteerSection.classList.add('hidden');
+        }
+
+        function showVolunteerSection() {
+            homeSection.classList.add('hidden');
+            reportSection.classList.add('hidden');
+            volunteerSection.classList.remove('hidden');
+            stopCamera();
+        }
+
+        function displayReports() {
+            reportsContainer.innerHTML = '';
+            
+            sampleReports.forEach(report => {
+                const reportCard = document.createElement('div');
+                reportCard.className = 'bg-white rounded-lg shadow-md overflow-hidden report-card transition duration-300';
+                reportCard.innerHTML = `
+                    <div class="h-48 overflow-hidden">
+                        ${report.image}
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <h3 class="font-semibold text-gray-800">${report.location}</h3>
+                            <span class="text-xs px-2 py-1 rounded-full ${getStatusClass(report.status)}">${report.status}</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mt-2 line-clamp-2">${report.description}</p>
+                        <div class="mt-4 flex justify-between items-center">
+                            <span class="text-xs text-gray-500">${formatDate(report.date)}</span>
+                            <button class="text-sm text-teal-600 hover:text-teal-800 font-medium view-details" data-id="${report.id}">View Details</button>
+                        </div>
+                    </div>
+                `;
+                reportsContainer.appendChild(reportCard);
+                
+                // Add event listener to the view details button
+                reportCard.querySelector('.view-details').addEventListener('click', () => {
+                    openReportDetail(report.id);
+                });
+            });
+        }
+
+        function displayVolunteerOpportunities() {
+            volunteerReportsContainer.innerHTML = '';
+            
+            sampleReports.forEach(report => {
+                const reportCard = document.createElement('div');
+                reportCard.className = 'bg-white rounded-lg shadow-md overflow-hidden report-card transition duration-300';
+                reportCard.innerHTML = `
+                    <div class="h-48 overflow-hidden">
+                        ${report.image}
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <h3 class="font-semibold text-gray-800">${report.location}</h3>
+                            <span class="text-xs px-2 py-1 rounded-full ${getStatusClass(report.status)}">${report.status}</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mt-2 line-clamp-2">${report.description}</p>
+                        <div class="mt-3">
+                            <p class="text-xs text-gray-500">Volunteers: ${report.volunteers.length > 0 ? report.volunteers.length : 'None yet'}</p>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center">
+                            <span class="text-xs text-gray-500">${formatDate(report.date)}</span>
+                            <button class="px-3 py-1 bg-teal-600 hover:bg-teal-700 text-white text-sm rounded-md volunteer-btn" data-id="${report.id}">
+                                Volunteer
+                            </button>
+                        </div>
+                    </div>
+                `;
+                volunteerReportsContainer.appendChild(reportCard);
+                
+                // Add event listener to the volunteer button
+                reportCard.querySelector('.volunteer-btn').addEventListener('click', () => {
+                    volunteerForCleanup(report.id);
+                });
+            });
+        }
+
+        function openReportDetail(reportId) {
+            const report = sampleReports.find(r => r.id === reportId);
+            if (!report) return;
+            
+            document.getElementById('modalTitle').textContent = `Report: ${report.location}`;
+            document.getElementById('modalImage').innerHTML = report.image;
+            document.getElementById('modalLocation').textContent = report.location;
+            document.getElementById('modalDescription').textContent = report.description;
+            document.getElementById('modalReporter').textContent = report.reporter;
+            document.getElementById('modalDate').textContent = formatDate(report.date);
+            document.getElementById('modalStatus').textContent = report.status;
+            
+            const volunteersList = document.getElementById('volunteersList');
+            volunteersList.innerHTML = '';
+            
+            if (report.volunteers.length > 0) {
+                report.volunteers.forEach(volunteer => {
+                    const li = document.createElement('li');
+                    li.textContent = volunteer;
+                    volunteersList.appendChild(li);
+                });
+            } else {
+                const li = document.createElement('li');
+                li.textContent = 'No volunteers yet';
+                volunteersList.appendChild(li);
+            }
+            
+            document.getElementById('volunteerForCleanup').setAttribute('data-id', reportId);
+            document.getElementById('volunteerForCleanup').addEventListener('click', () => {
+                volunteerForCleanup(reportId);
+                closeModal();
+            });
+            
+            reportDetailModal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            reportDetailModal.classList.add('hidden');
+        }
+
+        function volunteerForCleanup(reportId) {
+            const report = sampleReports.find(r => r.id === reportId);
+            if (!report) return;
+            
+            // Add a volunteer (in a real app, this would be the logged-in user)
+            const volunteerName = 'You';
+            if (!report.volunteers.includes(volunteerName)) {
+                report.volunteers.push(volunteerName);
+                
+                // Update status if this is the first volunteer
+                if (report.volunteers.length === 1 && report.status === 'Pending') {
+                    report.status = 'In Progress';
+                }
+                
+                // Update the UI
+                displayReports();
+                displayVolunteerOpportunities();
+                
+                // Show notification
+                showNotification('You have volunteered for cleanup!');
+            } else {
+                showNotification('You are already volunteering for this cleanup.');
+            }
+        }
+
+        function startCamera() {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function(mediaStream) {
+                        stream = mediaStream;
+                        videoElement.srcObject = mediaStream;
+                        videoElement.play();
+                        
+                        // Show video and capture button, hide placeholder
+                        videoElement.classList.remove('hidden');
+                        capturePhotoBtn.classList.remove('hidden');
+                        startCameraBtn.classList.add('hidden');
+                        cameraPlaceholder.classList.add('hidden');
+                    })
+                    .catch(function(error) {
+                        console.error('Camera error:', error);
+                        // In a real app, we would handle this error better
+                        showNotification('Could not access camera. Please check permissions.', 'error');
+                    });
+            } else {
+                showNotification('Your browser does not support camera access.', 'error');
+            }
+        }
+
+        function capturePhoto() {
+            const context = canvas.getContext('2d');
+            canvas.width = videoElement.videoWidth;
+            canvas.height = videoElement.videoHeight;
+            context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+            
+            // Display the captured photo
+            photoPreview.src = canvas.toDataURL('image/png');
+            photoPreview.classList.remove('hidden');
+            videoElement.classList.add('hidden');
+            capturePhotoBtn.classList.add('hidden');
+            retakePhotoBtn.classList.remove('hidden');
+            
+            // Stop the camera stream
+            stopCamera();
+        }
+
+        function retakePhoto() {
+            photoPreview.classList.add('hidden');
+            retakePhotoBtn.classList.add('hidden');
+            startCamera();
+        }
+
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => {
+                    track.stop();
+                });
+                stream = null;
+            }
+        }
+
+        function handleReportSubmit(e) {
+            e.preventDefault();
+            
+            const location = document.getElementById('location').value;
+            const description = document.getElementById('description').value;
+            
+            if (!location || !description) {
+                showNotification('Please fill in all required fields.', 'error');
+                return;
+            }
+            
+            // Create a new report
+            const newReport = {
+                id: sampleReports.length + 1,
+                location: location,
+                description: description,
+                reporter: 'You',
+                date: new Date().toISOString().split('T')[0],
+                status: 'Pending',
+                volunteers: [],
+                image: photoPreview.src ? photoPreview.src : createSampleSVG(location, getRandomColor())
+            };
+            
+            // Add to sample reports
+            sampleReports.unshift(newReport);
+            
+            // Update UI
+            displayReports();
+            displayVolunteerOpportunities();
+            
+            // Reset form
+            reportForm.reset();
+            photoPreview.classList.add('hidden');
+            retakePhotoBtn.classList.add('hidden');
+            startCameraBtn.classList.remove('hidden');
+            cameraPlaceholder.classList.remove('hidden');
+            
+            // Show notification and return to home
+            showNotification('Report submitted successfully!');
+            showHomeSection();
+        }
+
+        function showNotification(message, type = 'success') {
+            const notificationElement = document.getElementById('notification');
+            const messageElement = document.getElementById('notificationMessage');
+            
+            messageElement.textContent = message;
+            
+            if (type === 'error') {
+                notificationElement.classList.remove('bg-green-600');
+                notificationElement.classList.add('bg-red-600');
+            } else {
+                notificationElement.classList.remove('bg-red-600');
+                notificationElement.classList.add('bg-green-600');
+            }
+            
+            notificationElement.classList.remove('translate-y-20', 'opacity-0');
+            
+            setTimeout(() => {
+                notificationElement.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        function getStatusClass(status) {
+            switch (status) {
+                case 'Pending':
+                    return 'bg-yellow-100 text-yellow-800';
+                case 'In Progress':
+                    return 'bg-blue-100 text-blue-800';
+                case 'Completed':
+                    return 'bg-green-100 text-green-800';
+                default:
+                    return 'bg-gray-100 text-gray-800';
+            }
+        }
+
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
+
+        function getRandomColor() {
+            const colors = ['#0ea5e9', '#22c55e', '#f97316', '#8b5cf6', '#ec4899', '#14b8a6'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function createSampleSVG(location, color) {
+            // Create a simple SVG representation based on the location
+            const locationFirstLetter = location.charAt(0).toUpperCase();
+            
+            return `
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 400 300">
+                <rect width="400" height="300" fill="${color}" opacity="0.2" />
+                <rect x="0" y="200" width="400" height="100" fill="${color}" opacity="0.3" />
+                <circle cx="350" cy="50" r="30" fill="${color}" opacity="0.6" />
+                <text x="200" y="150" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="${color}">${locationFirstLetter}</text>
+                <text x="200" y="250" font-family="Arial" font-size="16" text-anchor="middle" fill="#333">${location}</text>
+                <g fill="none" stroke="#555" stroke-width="2">
+                    <path d="M50,50 L100,50 L100,100 L50,100 Z" />
+                    <path d="M150,70 L200,70 L200,100 L150,100 Z" />
+                    <path d="M250,50 L300,50 L300,90 L250,90 Z" />
+                </g>
+                <g fill="${color}" opacity="0.4">
+                    <circle cx="75" cy="180" r="15" />
+                    <circle cx="125" cy="180" r="10" />
+                    <circle cx="165" cy="180" r="12" />
+                </g>
+            </svg>
+            `;
+        }
+
+// Close modal when clicking outside
+window.addEventListener('click', (e) => {
+    if (e.target === reportDetailModal) {
+        closeModal();
+    }
+});
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'943cb31f335d771b',t:'MTc0NzkyMDk1Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

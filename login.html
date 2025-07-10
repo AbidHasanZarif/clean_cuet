@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Portal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      width: 100%;
+      max-width: 400px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      background-color: #0ea5e9;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0284c7;
+    }
+    .hidden {
+      display: none;
+    }
+    .nav-buttons {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .nav-buttons button {
+      width: auto;
+      margin: 0 10px;
+    }
+    .login {
+      background-color: #07c214;
+      color: white;
+      height: 35.5px;
+      width: 400px;
+      margin-top: 8px;
+      margin-bottom: 0px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: opacity 0.3s;
+      /* box-shadow:5px 5px 0px; */
+    }
+    .login:hover {
+      background-color: #07c214;
+      opacity:0.8;
+    }
+    .login:active {
+      background-color: #07c214;
+        opacity: 0.6;
+    }
+    .signin {
+      background-color:#07c214;
+      color: white;
+      height: 35.5px;
+      width: 67.43px;
+      margin-top: 10px;
+      margin-bottom: 0px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition:opacity 0.3s;
+    }
+    .signin:hover {
+      background-color: #07c214;
+      opacity:0.8;
+    }
+    .signin:active {
+      background-color: #07c214;
+        opacity: 0.6;
+    }
+    .signup{
+      background-color:#07c214;
+      color: white;
+      height: 35.5px;
+      width: 67.43px;
+      margin-top: 10px;
+      margin-bottom: 0px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition:opacity 0.3s;
+    }
+    .signup:hover {
+      background-color: #07c214;
+      opacity:0.8;
+    }
+    .signup:active {
+      background-color: #07c214;
+        opacity: 0.6;
+    }
+
+    .login2{
+      background-color:#07c214;
+      color: white;
+      height: 35.5px;
+      width: 85px;
+      margin-top: 10px;
+      margin-bottom: 0px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition:opacity 0.3s;
+    }
+    .login2:hover {
+      background-color: #07c214;
+      opacity:0.8;
+    }
+    .login2:active {
+      background-color: #07c214;
+        opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login Form -->
+  <div class="container" id="loginForm">
+    <h2>Student Login</h2>
+    <input type="tel" id="loginPhone" placeholder="Phone Number" required />
+    <input type="password" id="loginPassword" placeholder="Password" required />
+    <button class= "login" onclick="handleLogin()">Login</button>
+    <p id="error" style="color:red;"></p> 
+    <div class="nav-buttons">
+      <p>Not a memeber yet?<button class = "signin" onclick="showSignup()">Sign Up</button></p>
+    </div>
+  </div>
+
+  <!-- Signup Form -->
+  <div class="container hidden" id="signupForm">
+    <h2>Student Sign Up</h2>
+    <input type="text" id="signupName" placeholder="Full Name" required />
+    <!-- <input type="text" id="signupVarsity" placeholder="University Name" required /> -->
+     <select id="signupUniversity" required>
+      <option value="">Select University</option>
+      <option value="CUET">Chittagong University of Enginnering & Technology</option>
+      <option value="BUET">Bangladesh University of Enginnering & Technology</option>
+      <option value="KUET">Khulna University of Enginnering & Technology</option>
+      <option value="RUET">Rajshahi University of Enginnering & Technology</option>
+      <option value="CU">Chittagong University</option>
+    </select>
+    <input type="tel" id="signupPhone" placeholder="Phone Number" required />
+    <input type="email" id="signupEmail" placeholder="Gmail" required />
+ 
+
+<select id="signupDepartment" required>
+  <option value="">Select Department</option>
+  <option value="CSE">CSE</option>
+  <option value="EEE">EEE</option>
+  <option value="ME">ME</option>
+  <option value="CE">CE</option>
+  <option value="ITE">ETE</option>
+  <option value="PME">PME</option>
+  <option value="WRE">WRE</option>
+  <option value="ARCHI">ARCHI</option>
+  <option value="URP">URP</option>
+  <option value="MSE">MSE</option>
+  <option value="MIE">MIE</option>
+</select>
+
+<select id="signupHall" required>
+  <option value="">Select Hall</option>
+  <option value="Shaheed Mohammed Shah Hall">Shaheed Mohammed Shah Hall</option>
+  <option value="Kazi Nazrul Islam Hall">Kazi Nazrul Islam Hall</option>
+  <option value="Shaheed Tareq Huda Hall">Shaheed Tareq Huda Hall</option>
+  <option value="QK Hall">Qudrat-e Khuda Hall</option>
+  <option value="Shaheed Abu Shayed Hall">Shaheed Abu Shayed Hall</option>
+</select>
+    <select id="signupBloodGroup" required>
+      <option value="">Select Blood Group</option>
+      <option value="A+">A+</option>
+      <option value="A-">A-</option>
+      <option value="B+">B+</option>
+      <option value="B-">B-</option>
+      <option value="AB+">AB+</option>
+      <option value="AB-">AB-</option>
+      <option value="O+">O+</option>
+      <option value="O-">O-</option>
+    </select>
+    <input type="password" id="signupPassword" placeholder="Password" required />
+    <button class = "signup" onclick="handleSignup()">Sign Up</button>
+    <div class="nav-buttons">
+      <p>Already have an account? <button class = "login2" onclick="showLogin()">Login</button></p>
+    </div>
+  </div>
+
+  <!-- Home Page -->
+  <div class="container hidden" id="homePage">
+    <h2>Welcome, <span id="studentName"></span>!</h2>
+    <p><strong>University:</strong> <span id="studentVarsity"></span></p>
+    <p><strong>Phone:</strong> <span id="studentPhone"></span></p>
+    <p><strong>Email:</strong> <span id="studentEmail"></span></p>
+    <p><strong>Department:</strong> <span id="studentDepartment"></span></p>
+    <p><strong>Hall:</strong> <span id="studentHall"></span></p>
+    <p><strong>Blood Group:</strong> <span id="studentBloodGroup"></span></p>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <script>
+    
+    // Temporary storage for registered users
+    const users = [
+  {
+    name: "John Doe",
+    phone: "1234567890",
+    password: "111",
+    varsity: "CUET",
+    email: "john@example.com",
+    department: "CSE",
+    hall: "North Hall",
+    bloodGroup: "A+"
+  },
+  // Add more users here...
+];
+
+
+    function showLogin() {
+      document.getElementById('signupForm').classList.add('hidden');
+      document.getElementById('loginForm').classList.remove('hidden');
+  
+    }
+    function showSignup() {
+      document.getElementById('loginForm').classList.add('hidden');
+      document.getElementById('signupForm').classList.remove('hidden');
+    }
+
+    function handleSignup() {
+    const name = document.getElementById('signupName').value.trim();
+    const varsity = document.getElementById('signupUniversity').value.trim();
+    const phone = document.getElementById('signupPhone').value.trim();
+    const email = document.getElementById('signupEmail').value.trim();
+    const department = document.getElementById('signupDepartment').value.trim();
+    const hall = document.getElementById('signupHall').value.trim();
+    const bloodGroup = document.getElementById('signupBloodGroup').value.trim();
+    const password = document.getElementById('signupPassword').value.trim();
+;
+
+      // Basic validation
+      if (!name || !varsity || !phone || !email || !department || !hall || !bloodGroup || !password) {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      // Check if user already exists
+      const existingUser = users.find(user => user.phone === phone);
+      if (existingUser) {
+        alert('User with this phone number already exists.');
+        return;
+      }
+
+      // Store user data
+      users.push({ name, varsity, phone, email, department, hall, bloodGroup, password });
+
+      alert('Signup successful! Please log in.');
+      showLogin();
+    }
+
+    function handleLogin() {
+  const phone = document.getElementById('loginPhone').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+
+
+  const user = users.find(user => user.phone === phone && user.password === password);
+
+  if (user) {
+    // Store the user info so cleancuet.html can access it
+    localStorage.setItem('currentUser', JSON.stringify(user));
+
+    // Redirect to home page
+    window.location.href = "cleancuet.html";
+  } else {
+    alert('Invalid phone number or password.');
+  }
+}
+function logout() {
+  localStorage.removeItem('currentUser');
+  window.location.href = "login.html";  // Redirect user back to login page
+}
+
+  </script>
+
+</body>
+</html>
