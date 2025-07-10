@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- 
-    <!-- here the copy paste started -->
-     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CUET CleanCampus</title>
@@ -37,86 +34,78 @@
             object-fit: cover;
             border-radius: 0.5rem;
         }
-          .Menu {
-    /* Example customizations */
-    background-color: rgba(255, 255, 255, 0.9); /* slight transparency */
-    border-right: 2px solid #4ade80; /* green border */
-    font-family: 'Segoe UI', sans-serif;
-    font-weight: 500;
-    backdrop-filter: blur(8px);
-  }
-
-  .Menu button {
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-  }
-
-  .Menu button:hover {
-    background-color: #d1fae5; /* Tailwind green-100 */
-    color: #065f46; /* Tailwind green-700 */
-  }
+        .Menu {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-right: 2px solid #4ade80;
+            font-family: 'Segoe UI', sans-serif;
+            font-weight: 500;
+            backdrop-filter: blur(8px);
+        }
+        .Menu button {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+        .Menu button:hover {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
     </style>
 </head>
 <body>
     <div id="welcomeInfo" style="display:none;">
-    <h2>Welcome, <span id="studentName"></span>!</h2>
-    <p><strong>University:</strong> <span id="studentVarsity"></span></p>
-    <p><strong>Phone:</strong> <span id="studentPhone"></span></p>
-    <p><strong>Email:</strong> <span id="studentEmail"></span></p>
-    <p><strong>Department:</strong> <span id="studentDepartment"></span></p>
-    <p><strong>Hall:</strong> <span id="studentHall"></span></p>
-    <p><strong>Blood Group:</strong> <span id="studentBloodGroup"></span></p>
-
-    <button onclick="logout()">LOGOUT</button>
-  </div>
+        <h2>Welcome, <span id="studentName"></span>!</h2>
+        <p><strong>University:</strong> <span id="studentVarsity"></span></p>
+        <p><strong>Phone:</strong> <span id="studentPhone"></span></p>
+        <p><strong>Email:</strong> <span id="studentEmail"></span></p>
+        <p><strong>Department:</strong> <span id="studentDepartment"></span></p>
+        <p><strong>Hall:</strong> <span id="studentHall"></span></p>
+        <p><strong>Blood Group:</strong> <span id="studentBloodGroup"></span></p>
+        <button onclick="logout()">LOGOUT</button>
+    </div>
     <header class="bg-gradient-to-r from-green-600 to-teal-500 text-white shadow-lg">
         <div class="container mx-auto px-4 py-6">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-2">
-                    
                     <!-- Toggle Menu Button -->
-<button id="menuToggle" class="fixed top-[42px] left-4 z-50 p-2 bg-green-600 text-white rounded focus:outline-none flex flex-col justify-center items-center space-y-1 hover:bg-green-700">
-  <span class="block w-8 h-[3px] bg-white"></span>
-  <span class="block w-8 h-[3px] bg-white"></span>
-  <span class="block w-8 h-[3px] bg-white"></span>
-</button>
+                    <button id="menuToggle" class="fixed top-[42px] left-4 z-50 p-2 bg-green-600 text-white rounded focus:outline-none flex flex-col justify-center items-center space-y-1 hover:bg-green-700">
+                        <span class="block w-8 h-[3px] bg-white"></span>
+                        <span class="block w-8 h-[3px] bg-white"></span>
+                        <span class="block w-8 h-[3px] bg-white"></span>
+                    </button>
 
-
-<!-- Sidebar -->
-<div id="sidebar" class="fixed top-[60px] left-0 h-full w-64 bg-transparent transform -translate-x-full transition-transform duration-300 z-40">
-  <div class="p-4 shadow-lg border-b flex justify-between items-center">
-    <h2 class="text-lg font-semibold">MENU</h2>
-    <button id="closeSidebar" class="text-lg px-2 py-2 bg-red-500 font-bold">x</button>
-  </div>
-  <ul class="p-4 space-y-2 shadow-lg">
-    <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">Dashboard</button></li>
-    <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">Profile</button></li>
-    <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">Rewards</button></li>
-    <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">View Campus</button></li>
-    <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">Volunteer Hub</button></li>
-    <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">History</button></li>
-    <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">Settings</button></li>
-    <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">About us</button></li>
-    <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">Contact us</button></li>
-    <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded flex items-center space-x-2">
-      <svg class="w-4 h-4" fill="currentColor"><use href="#icon-facebook" /></svg>
-      <span>Join our community</span>
-    </button></li>
-  </ul>
-</div>
+                    <!-- Sidebar -->
+                    <div id="sidebar" class="fixed top-[60px] left-0 h-full w-64 bg-transparent transform -translate-x-full transition-transform duration-300 z-40">
+                        <div class="p-4 shadow-lg border-b flex justify-between items-center">
+                            <h2 class="text-lg font-semibold">MENU</h2>
+                            <button id="closeSidebar" class="text-lg px-2 py-2 bg-red-500 font-bold">x</button>
+                        </div>
+                        <ul class="p-4 space-y-2 shadow-lg">
+                            <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">Dashboard</button></li>
+                            <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">Profile</button></li>
+                            <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">Rewards</button></li>
+                            <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">View Campus</button></li>
+                            <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">Volunteer Hub</button></li>
+                            <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">History</button></li>
+                            <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">Settings</button></li>
+                            <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">About us</button></li>
+                            <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded">Contact us</button></li>
+                            <li><button class="w-full text-left px-4 py-2 bg-green-500 hover:bg-green-600 rounded flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="currentColor"><use href="#icon-facebook" /></svg>
+                                <span>Join our community</span>
+                            </button></li>
+                        </ul>
+                    </div>
 
                     <h1 class="text-2xl font-bold">CUET CleanCampus</h1>
                 </div>
-               <!-- Navigation -->
-               <nav class="p-4 flex justify-center space-x-4 bg-transparent">
-  <button id="homeBtn" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Home</button>
-  <button id="reportBtn" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Report</button>
-  <button id="volunteerBtn" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Volunteer</button>
-  <button onclick="logout()" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Logout</button>
-</nav>
-
-
+                <!-- Navigation -->
+                <nav class="p-4 flex justify-center space-x-4 bg-transparent">
+                    <button id="homeBtn" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Home</button>
+                    <button id="reportBtn" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Report</button>
+                    <button id="volunteerBtn" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Volunteer</button>
+                    <button onclick="logout()" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Logout</button>
+                </nav>
             </div>
         </div>
     </header>
@@ -167,13 +156,12 @@
                             <option value="Student Center">Student Center</option>
                             <option value="Dormitory Area">Dormitory Area</option>
                             <option value="Sports Complex">Central Field</option>
-                            <!-- <option value="Garden Area">Garden Area</option> -->
-                            <option value="Parking Lot">Shaheed Mohammed Shah Hall</option>
-                            <option value="Parking Lot">Kazi Nazrul Islam Hall</option>
-                            <option value="Parking Lot">Shaheed Tareq Huda Hall</option>
-                            <option value="Parking Lot">Qudrat-e Khuda Hall</option>
+                            <option value="Shaheed Mohammed Shah Hall">Shaheed Mohammed Shah Hall</option>
+                            <option value="Kazi Nazrul Islam Hall">Kazi Nazrul Islam Hall</option>
+                            <option value="Shaheed Tareq Huda Hall">Shaheed Tareq Huda Hall</option>
+                            <option value="Qudrat-e Khuda Hall">Qudrat-e Khuda Hall</option>
                             <option value="Parking Lot">Parking Lot</option>
-                            <option value="Other">Other(specify in description)</option>
+                            <option value="Other">Other (specify in description)</option>
                         </select>
                     </div>
 
@@ -234,7 +222,6 @@
                 </div>
             </div>
         </section>
-        
 
         <!-- Report Detail Modal -->
         <div id="reportDetailModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
@@ -316,78 +303,42 @@
     </footer>
 
     <script>
+        // Check authentication
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = "login.html";
+        }
 
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user) {
+            document.getElementById('studentName').textContent = user.name;
+            document.getElementById('studentVarsity').textContent = user.varsity;
+            document.getElementById('studentPhone').textContent = user.phone;
+            document.getElementById('studentEmail').textContent = user.email;
+            document.getElementById('studentDepartment').textContent = user.department;
+            document.getElementById('studentHall').textContent = user.hall;
+            document.getElementById('studentBloodGroup').textContent = user.bloodGroup;
+        }
 
-const user = JSON.parse(localStorage.getItem('currentUser'));
+        // Sidebar functionality
+        const sidebar = document.getElementById('sidebar');
+        const toggle = document.getElementById('menuToggle');
+        const closeBtn = document.getElementById('closeSidebar');
 
-    if (!user) {
-      window.location.href = "login.html"; // Redirect if not logged in
-    } else {
-      document.getElementById('studentName').textContent = user.name;
-      document.getElementById('studentVarsity').textContent = user.varsity;
-      document.getElementById('studentPhone').textContent = user.phone;
-      document.getElementById('studentEmail').textContent = user.email;
-      document.getElementById('studentDepartment').textContent = user.department;
-      document.getElementById('studentHall').textContent = user.hall;
-      document.getElementById('studentBloodGroup').textContent = user.bloodGroup;
-    }
+        toggle.addEventListener('click', () => {
+            sidebar.classList.remove('-translate-x-full');
+        });
 
-const sidebar = document.getElementById('sidebar');
-  const toggle = document.getElementById('menuToggle');
-  const closeBtn = document.getElementById('closeSidebar');
+        closeBtn.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+        });
 
-  toggle.addEventListener('click', () => {
-    sidebar.classList.remove('-translate-x-full');
-  });
-
-  closeBtn.addEventListener('click', () => {
-    sidebar.classList.add('-translate-x-full');
-  });
-
-  // Optional: click outside to close
-  document.addEventListener('click', (e) => {
-    if (!sidebar.contains(e.target) && !toggle.contains(e.target)) {
-      sidebar.classList.add('-translate-x-full');
-    }
-  })
-
-    function logout() {
-      localStorage.removeItem('currentUser');
-      window.location.href = "login.html";
-    }
-        // Sample data for reports
-        const sampleReports = [
-            {
-                id: 1,
-                location: 'Academic Building 1',
-                description: 'Trash near the entrance needs to be cleaned up.',
-                reporter: 'Ahmed H.',
-                date: '2023-10-15',
-                status: 'Pending',
-                volunteers: ['Fatima K.'],
-                image: createSampleSVG('Academic Building', '#f97316')
-            },
-            {
-                id: 2,
-                location: 'Cafeteria',
-                description: 'Food waste and plastic bottles scattered around the outdoor seating area.',
-                reporter: 'Maryam J.',
-                date: '2023-10-14',
-                status: 'In Progress',
-                volunteers: ['Rahul S.', 'Priya M.', 'Omar T.'],
-                image: createSampleSVG('Cafeteria', '#0ea5e9')
-            },
-            {
-                id: 3,
-                location: 'Garden Area',
-                description: 'Paper waste and plastic bags near the benches.',
-                reporter: 'Zainab A.',
-                date: '2023-10-13',
-                status: 'Pending',
-                volunteers: [],
-                image: createSampleSVG('Garden', '#22c55e')
+        // Close sidebar when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!sidebar.contains(e.target) && !toggle.contains(e.target)) {
+                sidebar.classList.add('-translate-x-full');
             }
-        ];
+        });
 
         // DOM Elements
         const homeSection = document.getElementById('homeSection');
@@ -429,9 +380,205 @@ const sidebar = document.getElementById('sidebar');
         // Initialize the app
         initializeApp();
 
-        function initializeApp() {
-            displayReports();
-            displayVolunteerOpportunities();
+        // API Functions
+        async function fetchReports() {
+            try {
+                const response = await fetch('http://localhost:5000/api/reports');
+                if (!response.ok) throw new Error('Failed to fetch reports');
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching reports:', error);
+                showNotification('Failed to load reports', 'error');
+                return [];
+            }
+        }
+
+        async function submitReport(reportData) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('http://localhost:5000/api/reports', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-auth-token': token
+                    },
+                    body: JSON.stringify(reportData)
+                });
+                
+                if (!response.ok) throw new Error('Failed to submit report');
+                return await response.json();
+            } catch (error) {
+                console.error('Error submitting report:', error);
+                throw error;
+            }
+        }
+
+        async function volunteerForCleanup(reportId) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`http://localhost:5000/api/reports/${reportId}/volunteer`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-auth-token': token
+                    }
+                });
+                
+                if (!response.ok) throw new Error('Failed to volunteer');
+                return await response.json();
+            } catch (error) {
+                console.error('Error volunteering:', error);
+                throw error;
+            }
+        }
+
+        // App Functions
+        async function initializeApp() {
+            try {
+                const reports = await fetchReports();
+                displayReports(reports);
+                displayVolunteerOpportunities(reports);
+            } catch (error) {
+                console.error('Initialization error:', error);
+            }
+        }
+
+        function displayReports(reports) {
+            reportsContainer.innerHTML = '';
+            
+            reports.forEach(report => {
+                const reportCard = document.createElement('div');
+                reportCard.className = 'bg-white rounded-lg shadow-md overflow-hidden report-card transition duration-300';
+                
+                // Use the actual image if available, otherwise create a placeholder
+                const imageContent = report.image ? 
+                    `<img src="${report.image}" class="w-full h-48 object-cover" alt="${report.location}">` : 
+                    createSampleSVG(report.location, getRandomColor());
+                
+                reportCard.innerHTML = `
+                    <div class="h-48 overflow-hidden">
+                        ${imageContent}
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <h3 class="font-semibold text-gray-800">${report.location}</h3>
+                            <span class="text-xs px-2 py-1 rounded-full ${getStatusClass(report.status)}">${report.status}</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mt-2 line-clamp-2">${report.description}</p>
+                        <div class="mt-4 flex justify-between items-center">
+                            <span class="text-xs text-gray-500">${formatDate(report.createdAt)}</span>
+                            <button class="text-sm text-teal-600 hover:text-teal-800 font-medium view-details" data-id="${report._id}">View Details</button>
+                        </div>
+                    </div>
+                `;
+                reportsContainer.appendChild(reportCard);
+                
+                // Add event listener to the view details button
+                reportCard.querySelector('.view-details').addEventListener('click', () => {
+                    openReportDetail(report);
+                });
+            });
+        }
+
+        function displayVolunteerOpportunities(reports) {
+            volunteerReportsContainer.innerHTML = '';
+            
+            reports.forEach(report => {
+                const reportCard = document.createElement('div');
+                reportCard.className = 'bg-white rounded-lg shadow-md overflow-hidden report-card transition duration-300';
+                
+                // Use the actual image if available, otherwise create a placeholder
+                const imageContent = report.image ? 
+                    `<img src="${report.image}" class="w-full h-48 object-cover" alt="${report.location}">` : 
+                    createSampleSVG(report.location, getRandomColor());
+                
+                reportCard.innerHTML = `
+                    <div class="h-48 overflow-hidden">
+                        ${imageContent}
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start">
+                            <h3 class="font-semibold text-gray-800">${report.location}</h3>
+                            <span class="text-xs px-2 py-1 rounded-full ${getStatusClass(report.status)}">${report.status}</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mt-2 line-clamp-2">${report.description}</p>
+                        <div class="mt-3">
+                            <p class="text-xs text-gray-500">Volunteers: ${report.volunteers.length > 0 ? report.volunteers.length : 'None yet'}</p>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center">
+                            <span class="text-xs text-gray-500">${formatDate(report.createdAt)}</span>
+                            <button class="px-3 py-1 bg-teal-600 hover:bg-teal-700 text-white text-sm rounded-md volunteer-btn" data-id="${report._id}">
+                                Volunteer
+                            </button>
+                        </div>
+                    </div>
+                `;
+                volunteerReportsContainer.appendChild(reportCard);
+                
+                // Add event listener to the volunteer button
+                reportCard.querySelector('.volunteer-btn').addEventListener('click', () => {
+                    volunteerForReport(report._id);
+                });
+            });
+        }
+
+        function openReportDetail(report) {
+            document.getElementById('modalTitle').textContent = `Report: ${report.location}`;
+            
+            // Set image - use actual if available, otherwise placeholder
+            const modalImage = document.getElementById('modalImage');
+            if (report.image) {
+                modalImage.src = report.image;
+                modalImage.style.display = 'block';
+            } else {
+                modalImage.style.display = 'none';
+                modalImage.parentElement.innerHTML = createSampleSVG(report.location, getRandomColor());
+            }
+            
+            document.getElementById('modalLocation').textContent = report.location;
+            document.getElementById('modalDescription').textContent = report.description;
+            document.getElementById('modalReporter').textContent = report.reporter ? report.reporter.name : 'Anonymous';
+            document.getElementById('modalDate').textContent = formatDate(report.createdAt);
+            document.getElementById('modalStatus').textContent = report.status;
+            
+            const volunteersList = document.getElementById('volunteersList');
+            volunteersList.innerHTML = '';
+            
+            if (report.volunteers && report.volunteers.length > 0) {
+                report.volunteers.forEach(volunteer => {
+                    const li = document.createElement('li');
+                    li.textContent = volunteer.name;
+                    volunteersList.appendChild(li);
+                });
+            } else {
+                const li = document.createElement('li');
+                li.textContent = 'No volunteers yet';
+                volunteersList.appendChild(li);
+            }
+            
+            document.getElementById('volunteerForCleanup').setAttribute('data-id', report._id);
+            document.getElementById('volunteerForCleanup').addEventListener('click', () => {
+                volunteerForReport(report._id);
+                closeModal();
+            });
+            
+            reportDetailModal.classList.remove('hidden');
+        }
+
+        async function volunteerForReport(reportId) {
+            try {
+                await volunteerForCleanup(reportId);
+                const reports = await fetchReports();
+                displayReports(reports);
+                displayVolunteerOpportunities(reports);
+                showNotification('You have volunteered for cleanup!');
+            } catch (error) {
+                showNotification(error.message || 'Failed to volunteer', 'error');
+            }
+        }
+
+        function closeModal() {
+            reportDetailModal.classList.add('hidden');
         }
 
         function showHomeSection() {
@@ -454,135 +601,43 @@ const sidebar = document.getElementById('sidebar');
             stopCamera();
         }
 
-        function displayReports() {
-            reportsContainer.innerHTML = '';
+        async function handleReportSubmit(e) {
+            e.preventDefault();
             
-            sampleReports.forEach(report => {
-                const reportCard = document.createElement('div');
-                reportCard.className = 'bg-white rounded-lg shadow-md overflow-hidden report-card transition duration-300';
-                reportCard.innerHTML = `
-                    <div class="h-48 overflow-hidden">
-                        ${report.image}
-                    </div>
-                    <div class="p-4">
-                        <div class="flex justify-between items-start">
-                            <h3 class="font-semibold text-gray-800">${report.location}</h3>
-                            <span class="text-xs px-2 py-1 rounded-full ${getStatusClass(report.status)}">${report.status}</span>
-                        </div>
-                        <p class="text-gray-600 text-sm mt-2 line-clamp-2">${report.description}</p>
-                        <div class="mt-4 flex justify-between items-center">
-                            <span class="text-xs text-gray-500">${formatDate(report.date)}</span>
-                            <button class="text-sm text-teal-600 hover:text-teal-800 font-medium view-details" data-id="${report.id}">View Details</button>
-                        </div>
-                    </div>
-                `;
-                reportsContainer.appendChild(reportCard);
-                
-                // Add event listener to the view details button
-                reportCard.querySelector('.view-details').addEventListener('click', () => {
-                    openReportDetail(report.id);
-                });
-            });
-        }
-
-        function displayVolunteerOpportunities() {
-            volunteerReportsContainer.innerHTML = '';
+            const location = document.getElementById('location').value;
+            const description = document.getElementById('description').value;
+            const image = photoPreview.src || '';
             
-            sampleReports.forEach(report => {
-                const reportCard = document.createElement('div');
-                reportCard.className = 'bg-white rounded-lg shadow-md overflow-hidden report-card transition duration-300';
-                reportCard.innerHTML = `
-                    <div class="h-48 overflow-hidden">
-                        ${report.image}
-                    </div>
-                    <div class="p-4">
-                        <div class="flex justify-between items-start">
-                            <h3 class="font-semibold text-gray-800">${report.location}</h3>
-                            <span class="text-xs px-2 py-1 rounded-full ${getStatusClass(report.status)}">${report.status}</span>
-                        </div>
-                        <p class="text-gray-600 text-sm mt-2 line-clamp-2">${report.description}</p>
-                        <div class="mt-3">
-                            <p class="text-xs text-gray-500">Volunteers: ${report.volunteers.length > 0 ? report.volunteers.length : 'None yet'}</p>
-                        </div>
-                        <div class="mt-4 flex justify-between items-center">
-                            <span class="text-xs text-gray-500">${formatDate(report.date)}</span>
-                            <button class="px-3 py-1 bg-teal-600 hover:bg-teal-700 text-white text-sm rounded-md volunteer-btn" data-id="${report.id}">
-                                Volunteer
-                            </button>
-                        </div>
-                    </div>
-                `;
-                volunteerReportsContainer.appendChild(reportCard);
-                
-                // Add event listener to the volunteer button
-                reportCard.querySelector('.volunteer-btn').addEventListener('click', () => {
-                    volunteerForCleanup(report.id);
-                });
-            });
-        }
-
-        function openReportDetail(reportId) {
-            const report = sampleReports.find(r => r.id === reportId);
-            if (!report) return;
-            
-            document.getElementById('modalTitle').textContent = `Report: ${report.location}`;
-            document.getElementById('modalImage').innerHTML = report.image;
-            document.getElementById('modalLocation').textContent = report.location;
-            document.getElementById('modalDescription').textContent = report.description;
-            document.getElementById('modalReporter').textContent = report.reporter;
-            document.getElementById('modalDate').textContent = formatDate(report.date);
-            document.getElementById('modalStatus').textContent = report.status;
-            
-            const volunteersList = document.getElementById('volunteersList');
-            volunteersList.innerHTML = '';
-            
-            if (report.volunteers.length > 0) {
-                report.volunteers.forEach(volunteer => {
-                    const li = document.createElement('li');
-                    li.textContent = volunteer;
-                    volunteersList.appendChild(li);
-                });
-            } else {
-                const li = document.createElement('li');
-                li.textContent = 'No volunteers yet';
-                volunteersList.appendChild(li);
+            if (!location || !description) {
+                showNotification('Please fill in all required fields.', 'error');
+                return;
             }
             
-            document.getElementById('volunteerForCleanup').setAttribute('data-id', reportId);
-            document.getElementById('volunteerForCleanup').addEventListener('click', () => {
-                volunteerForCleanup(reportId);
-                closeModal();
-            });
-            
-            reportDetailModal.classList.remove('hidden');
-        }
-
-        function closeModal() {
-            reportDetailModal.classList.add('hidden');
-        }
-
-        function volunteerForCleanup(reportId) {
-            const report = sampleReports.find(r => r.id === reportId);
-            if (!report) return;
-            
-            // Add a volunteer (in a real app, this would be the logged-in user)
-            const volunteerName = 'You';
-            if (!report.volunteers.includes(volunteerName)) {
-                report.volunteers.push(volunteerName);
+            try {
+                const reportData = {
+                    location,
+                    description,
+                    image
+                };
                 
-                // Update status if this is the first volunteer
-                if (report.volunteers.length === 1 && report.status === 'Pending') {
-                    report.status = 'In Progress';
-                }
+                await submitReport(reportData);
                 
-                // Update the UI
-                displayReports();
-                displayVolunteerOpportunities();
+                // Reset form
+                reportForm.reset();
+                photoPreview.classList.add('hidden');
+                retakePhotoBtn.classList.add('hidden');
+                startCameraBtn.classList.remove('hidden');
+                cameraPlaceholder.classList.remove('hidden');
                 
-                // Show notification
-                showNotification('You have volunteered for cleanup!');
-            } else {
-                showNotification('You are already volunteering for this cleanup.');
+                // Refresh reports
+                const reports = await fetchReports();
+                displayReports(reports);
+                displayVolunteerOpportunities(reports);
+                
+                showNotification('Report submitted successfully!');
+                showHomeSection();
+            } catch (error) {
+                showNotification('Failed to submit report. Please try again.', 'error');
             }
         }
 
@@ -602,7 +657,6 @@ const sidebar = document.getElementById('sidebar');
                     })
                     .catch(function(error) {
                         console.error('Camera error:', error);
-                        // In a real app, we would handle this error better
                         showNotification('Could not access camera. Please check permissions.', 'error');
                     });
             } else {
@@ -642,48 +696,6 @@ const sidebar = document.getElementById('sidebar');
             }
         }
 
-        function handleReportSubmit(e) {
-            e.preventDefault();
-            
-            const location = document.getElementById('location').value;
-            const description = document.getElementById('description').value;
-            
-            if (!location || !description) {
-                showNotification('Please fill in all required fields.', 'error');
-                return;
-            }
-            
-            // Create a new report
-            const newReport = {
-                id: sampleReports.length + 1,
-                location: location,
-                description: description,
-                reporter: 'You',
-                date: new Date().toISOString().split('T')[0],
-                status: 'Pending',
-                volunteers: [],
-                image: photoPreview.src ? photoPreview.src : createSampleSVG(location, getRandomColor())
-            };
-            
-            // Add to sample reports
-            sampleReports.unshift(newReport);
-            
-            // Update UI
-            displayReports();
-            displayVolunteerOpportunities();
-            
-            // Reset form
-            reportForm.reset();
-            photoPreview.classList.add('hidden');
-            retakePhotoBtn.classList.add('hidden');
-            startCameraBtn.classList.remove('hidden');
-            cameraPlaceholder.classList.remove('hidden');
-            
-            // Show notification and return to home
-            showNotification('Report submitted successfully!');
-            showHomeSection();
-        }
-
         function showNotification(message, type = 'success') {
             const notificationElement = document.getElementById('notification');
             const messageElement = document.getElementById('notificationMessage');
@@ -719,8 +731,9 @@ const sidebar = document.getElementById('sidebar');
         }
 
         function formatDate(dateString) {
+            const date = new Date(dateString);
             const options = { year: 'numeric', month: 'short', day: 'numeric' };
-            return new Date(dateString).toLocaleDateString(undefined, options);
+            return date.toLocaleDateString(undefined, options);
         }
 
         function getRandomColor() {
@@ -729,7 +742,6 @@ const sidebar = document.getElementById('sidebar');
         }
 
         function createSampleSVG(location, color) {
-            // Create a simple SVG representation based on the location
             const locationFirstLetter = location.charAt(0).toUpperCase();
             
             return `
@@ -753,12 +765,18 @@ const sidebar = document.getElementById('sidebar');
             `;
         }
 
-// Close modal when clicking outside
-window.addEventListener('click', (e) => {
-    if (e.target === reportDetailModal) {
-        closeModal();
-    }
-});
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('currentUser');
+            window.location.href = "login.html";
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === reportDetailModal) {
+                closeModal();
+            }
+        });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'943cb31f335d771b',t:'MTc0NzkyMDk1Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
