@@ -50,6 +50,20 @@
             background-color: #d1fae5;
             color: #065f46;
         }
+        .report-card {
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .report-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Make sure buttons inside cards don't trigger the card click */
+        .report-card button {
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -448,7 +462,8 @@
             
             reports.forEach(report => {
                 const reportCard = document.createElement('div');
-                reportCard.className = 'bg-white rounded-lg shadow-md overflow-hidden report-card transition duration-300';
+                reportCard.className = 'bg-white rounded-lg shadow-md overflow-hidden report-card transition duration-300 cursor-pointer';
+                reportCard.dataset.id = report._id; // Add the report ID to the card
                 
                 // Use the actual image if available, otherwise create a placeholder
                 const imageContent = report.image ? 
@@ -467,14 +482,14 @@
                         <p class="text-gray-600 text-sm mt-2 line-clamp-2">${report.description}</p>
                         <div class="mt-4 flex justify-between items-center">
                             <span class="text-xs text-gray-500">${formatDate(report.createdAt)}</span>
-                            <button class="text-sm text-teal-600 hover:text-teal-800 font-medium view-details" data-id="${report._id}">View Details</button>
+                            <span class="text-sm text-teal-600 font-medium">View Details</span>
                         </div>
                     </div>
                 `;
                 reportsContainer.appendChild(reportCard);
                 
-                // Add event listener to the view details button
-                reportCard.querySelector('.view-details').addEventListener('click', () => {
+                // Add event listener to the entire card
+                reportCard.addEventListener('click', () => {
                     openReportDetail(report);
                 });
             });
@@ -485,7 +500,8 @@
             
             reports.forEach(report => {
                 const reportCard = document.createElement('div');
-                reportCard.className = 'bg-white rounded-lg shadow-md overflow-hidden report-card transition duration-300';
+                reportCard.className = 'bg-white rounded-lg shadow-md overflow-hidden report-card transition duration-300 cursor-pointer';
+                reportCard.dataset.id = report._id; // Add the report ID to the card
                 
                 // Use the actual image if available, otherwise create a placeholder
                 const imageContent = report.image ? 
@@ -507,17 +523,17 @@
                         </div>
                         <div class="mt-4 flex justify-between items-center">
                             <span class="text-xs text-gray-500">${formatDate(report.createdAt)}</span>
-                            <button class="px-3 py-1 bg-teal-600 hover:bg-teal-700 text-white text-sm rounded-md volunteer-btn" data-id="${report._id}">
+                            <span class="px-3 py-1 bg-teal-600 text-white text-sm rounded-md">
                                 Volunteer
-                            </button>
+                            </span>
                         </div>
                     </div>
                 `;
                 volunteerReportsContainer.appendChild(reportCard);
                 
-                // Add event listener to the volunteer button
-                reportCard.querySelector('.volunteer-btn').addEventListener('click', () => {
-                    volunteerForReport(report._id);
+                // Add event listener to the entire card
+                reportCard.addEventListener('click', () => {
+                    openReportDetail(report);
                 });
             });
         }
