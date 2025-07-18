@@ -63,4 +63,38 @@ router.put('/:id/volunteer', auth, async (req, res) => {
   }
 });
 
+// Retract from volunteering for a report
+router.put('/:id/retract', auth, async (req, res) => {
+  try {
+    const report = await Report.findById(req.params.id);
+    
+    if (!report) {
+      return res.status(404).json({ msg: 'Report not found' });
+    }
+
+    // Check if user is a volunteer
+    const volunteerIndex = report.volunteers.findIndex(
+      volunteer => volunteer.toString() === req.user.id
+    );
+
+    if (volunteerIndex === -1) {
+      return res.status(400).json({ msg: 'You are not a volunteer for this report' });
+    }
+
+    // Remove user from volunteers array
+    report.volunteers.splice(volunteerIndex, 1);
+    
+    // Update status if no volunteers left
+    if (report.volunteers.length === 0 && report.status === 'In Progress') {
+      report.status = 'Pending';
+    }
+
+    await report.save();
+    res.json(report.volunteers);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
 module.exports = router;

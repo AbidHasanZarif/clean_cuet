@@ -54,12 +54,10 @@
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
         .report-card:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
         }
-
         /* Make sure buttons inside cards don't trigger the card click */
         .report-card button {
             pointer-events: none;
@@ -278,9 +276,12 @@
                             <ul id="volunteersList" class="list-disc pl-5 text-gray-800"></ul>
                         </div>
                     </div>
-                    <div class="mt-6 flex justify-end">
-                        <button id="volunteerForCleanup" class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition duration-300">
+                    <div class="mt-6 flex justify-end space-x-3">
+                        <button id="volunteerForCleanup" class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition duration-300 hidden">
                             Volunteer for Cleanup
+                        </button>
+                        <button id="retractVolunteer" class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md transition duration-300 hidden">
+                            Retract from Volunteer
                         </button>
                     </div>
                 </div>
@@ -363,6 +364,8 @@
         const reportForm = document.getElementById('reportForm');
         const reportDetailModal = document.getElementById('reportDetailModal');
         const notification = document.getElementById('notification');
+        const volunteerBtn = document.getElementById('volunteerForCleanup');
+        const retractBtn = document.getElementById('retractVolunteer');
 
         // Navigation
         document.getElementById('homeBtn').addEventListener('click', showHomeSection);
@@ -390,6 +393,39 @@
 
         // Form submission
         reportForm.addEventListener('submit', handleReportSubmit);
+
+        // Volunteer button handlers
+        volunteerBtn.addEventListener('click', async () => {
+            const reportId = volunteerBtn.dataset.id;
+            if (reportId) {
+                try {
+                    await volunteerForCleanup(reportId);
+                    const reports = await fetchReports();
+                    displayReports(reports);
+                    displayVolunteerOpportunities(reports);
+                    showNotification('You have volunteered for cleanup!');
+                    closeModal();
+                } catch (error) {
+                    showNotification(error.message || 'Failed to volunteer', 'error');
+                }
+            }
+        });
+
+        retractBtn.addEventListener('click', async () => {
+            const reportId = retractBtn.dataset.id;
+            if (reportId) {
+                try {
+                    await retractFromVolunteer(reportId);
+                    const reports = await fetchReports();
+                    displayReports(reports);
+                    displayVolunteerOpportunities(reports);
+                    showNotification('You have retracted from volunteering');
+                    closeModal();
+                } catch (error) {
+                    showNotification(error.message || 'Failed to retract', 'error');
+                }
+            }
+        });
 
         // Initialize the app
         initializeApp();
@@ -446,6 +482,25 @@
             }
         }
 
+        async function retractFromVolunteer(reportId) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`http://localhost:5000/api/reports/${reportId}/retract`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-auth-token': token
+                    }
+                });
+                
+                if (!response.ok) throw new Error('Failed to retract volunteer');
+                return await response.json();
+            } catch (error) {
+                console.error('Error retracting volunteer:', error);
+                throw error;
+            }
+        }
+
         // App Functions
         async function initializeApp() {
             try {
@@ -463,7 +518,7 @@
             reports.forEach(report => {
                 const reportCard = document.createElement('div');
                 reportCard.className = 'bg-white rounded-lg shadow-md overflow-hidden report-card transition duration-300 cursor-pointer';
-                reportCard.dataset.id = report._id; // Add the report ID to the card
+                reportCard.dataset.id = report._id;
                 
                 // Use the actual image if available, otherwise create a placeholder
                 const imageContent = report.image ? 
@@ -501,7 +556,7 @@
             reports.forEach(report => {
                 const reportCard = document.createElement('div');
                 reportCard.className = 'bg-white rounded-lg shadow-md overflow-hidden report-card transition duration-300 cursor-pointer';
-                reportCard.dataset.id = report._id; // Add the report ID to the card
+                reportCard.dataset.id = report._id;
                 
                 // Use the actual image if available, otherwise create a placeholder
                 const imageContent = report.image ? 
@@ -545,10 +600,10 @@
             const modalImage = document.getElementById('modalImage');
             if (report.image) {
                 modalImage.src = report.image;
-                modalImage.style.display = 'block';
             } else {
-                modalImage.style.display = 'none';
-                modalImage.parentElement.innerHTML = createSampleSVG(report.location, getRandomColor());
+                // Create a data URL for the SVG
+                const svgString = createSampleSVG(report.location, getRandomColor());
+                modalImage.src = 'data:image/svg+xml;base64,' + btoa(svgString);
             }
             
             document.getElementById('modalLocation').textContent = report.location;
@@ -560,11 +615,19 @@
             const volunteersList = document.getElementById('volunteersList');
             volunteersList.innerHTML = '';
             
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            let isCurrentUserVolunteer = false;
+            
             if (report.volunteers && report.volunteers.length > 0) {
                 report.volunteers.forEach(volunteer => {
                     const li = document.createElement('li');
                     li.textContent = volunteer.name;
                     volunteersList.appendChild(li);
+                    
+                    // Check if current user is a volunteer
+                    if (currentUser && volunteer._id === currentUser._id) {
+                        isCurrentUserVolunteer = true;
+                    }
                 });
             } else {
                 const li = document.createElement('li');
@@ -572,29 +635,30 @@
                 volunteersList.appendChild(li);
             }
             
-            document.getElementById('volunteerForCleanup').setAttribute('data-id', report._id);
-            document.getElementById('volunteerForCleanup').addEventListener('click', () => {
-                volunteerForReport(report._id);
-                closeModal();
-            });
+            // Set appropriate button visibility
+            volunteerBtn.classList.add('hidden');
+            retractBtn.classList.add('hidden');
+            volunteerBtn.dataset.id = report._id;
+            retractBtn.dataset.id = report._id;
+            
+            if (isCurrentUserVolunteer) {
+                retractBtn.classList.remove('hidden');
+            } else {
+                volunteerBtn.classList.remove('hidden');
+            }
             
             reportDetailModal.classList.remove('hidden');
         }
 
-        async function volunteerForReport(reportId) {
-            try {
-                await volunteerForCleanup(reportId);
-                const reports = await fetchReports();
-                displayReports(reports);
-                displayVolunteerOpportunities(reports);
-                showNotification('You have volunteered for cleanup!');
-            } catch (error) {
-                showNotification(error.message || 'Failed to volunteer', 'error');
-            }
-        }
-
         function closeModal() {
             reportDetailModal.classList.add('hidden');
+            // Reset modal content
+            document.getElementById('modalImage').src = '';
+            document.getElementById('modalLocation').textContent = '';
+            document.getElementById('modalDescription').textContent = '';
+            document.getElementById('volunteersList').innerHTML = '';
+            volunteerBtn.dataset.id = '';
+            retractBtn.dataset.id = '';
         }
 
         function showHomeSection() {
