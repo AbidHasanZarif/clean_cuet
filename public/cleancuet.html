@@ -58,7 +58,6 @@
             transform: translateY(-3px);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
         }
-        /* Make sure buttons inside cards don't trigger the card click */
         .report-card button {
             pointer-events: none;
         }
@@ -593,62 +592,74 @@
             });
         }
 
-        function openReportDetail(report) {
-            document.getElementById('modalTitle').textContent = `Report: ${report.location}`;
-            
-            // Set image - use actual if available, otherwise placeholder
-            const modalImage = document.getElementById('modalImage');
-            if (report.image) {
-                modalImage.src = report.image;
+       function openReportDetail(report) {
+    document.getElementById('modalTitle').textContent = `Report: ${report.location}`;
+    
+    // Set image - use actual if available, otherwise placeholder
+    const modalImage = document.getElementById('modalImage');
+    if (report.image) {
+        modalImage.src = report.image;
+    } else {
+        // Create a data URL for the SVG
+        const svgString = createSampleSVG(report.location, getRandomColor());
+        modalImage.src = 'data:image/svg+xml;base64,' + btoa(svgString);
+    }
+    
+    document.getElementById('modalLocation').textContent = report.location;
+    document.getElementById('modalDescription').textContent = report.description;
+    document.getElementById('modalReporter').textContent = report.reporter ? report.reporter.name : 'Anonymous';
+    document.getElementById('modalDate').textContent = formatDate(report.createdAt);
+    document.getElementById('modalStatus').textContent = report.status;
+    
+    const volunteersList = document.getElementById('volunteersList');
+    volunteersList.innerHTML = '';
+    
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    let isCurrentUserVolunteer = false;
+    
+    if (report.volunteers && report.volunteers.length > 0) {
+        report.volunteers.forEach(volunteer => {
+            const li = document.createElement('li');
+            // Check if volunteer is an object or just an ID string
+            if (typeof volunteer === 'object') {
+                li.textContent = volunteer.name;
+                // Compare with current user ID
+                if (currentUser && volunteer._id === currentUser._id) {
+                    isCurrentUserVolunteer = true;
+                }
             } else {
-                // Create a data URL for the SVG
-                const svgString = createSampleSVG(report.location, getRandomColor());
-                modalImage.src = 'data:image/svg+xml;base64,' + btoa(svgString);
+                // If it's just an ID string
+                if (currentUser && volunteer === currentUser._id) {
+                    isCurrentUserVolunteer = true;
+                    li.textContent = currentUser.name + ' (You)';
+                } else {
+                    li.textContent = 'Volunteer ID: ' + volunteer;
+                }
             }
-            
-            document.getElementById('modalLocation').textContent = report.location;
-            document.getElementById('modalDescription').textContent = report.description;
-            document.getElementById('modalReporter').textContent = report.reporter ? report.reporter.name : 'Anonymous';
-            document.getElementById('modalDate').textContent = formatDate(report.createdAt);
-            document.getElementById('modalStatus').textContent = report.status;
-            
-            const volunteersList = document.getElementById('volunteersList');
-            volunteersList.innerHTML = '';
-            
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            let isCurrentUserVolunteer = false;
-            
-            if (report.volunteers && report.volunteers.length > 0) {
-                report.volunteers.forEach(volunteer => {
-                    const li = document.createElement('li');
-                    li.textContent = volunteer.name;
-                    volunteersList.appendChild(li);
-                    
-                    // Check if current user is a volunteer
-                    if (currentUser && volunteer._id === currentUser._id) {
-                        isCurrentUserVolunteer = true;
-                    }
-                });
-            } else {
-                const li = document.createElement('li');
-                li.textContent = 'No volunteers yet';
-                volunteersList.appendChild(li);
-            }
-            
-            // Set appropriate button visibility
-            volunteerBtn.classList.add('hidden');
-            retractBtn.classList.add('hidden');
-            volunteerBtn.dataset.id = report._id;
-            retractBtn.dataset.id = report._id;
-            
-            if (isCurrentUserVolunteer) {
-                retractBtn.classList.remove('hidden');
-            } else {
-                volunteerBtn.classList.remove('hidden');
-            }
-            
-            reportDetailModal.classList.remove('hidden');
+            volunteersList.appendChild(li);
+        });
+    } else {
+        const li = document.createElement('li');
+        li.textContent = 'No volunteers yet';
+        volunteersList.appendChild(li);
+    }
+    
+    // Set appropriate button visibility
+    volunteerBtn.classList.add('hidden');
+    retractBtn.classList.add('hidden');
+    volunteerBtn.dataset.id = report._id;
+    retractBtn.dataset.id = report._id;
+    
+    if (currentUser) {
+        if (isCurrentUserVolunteer) {
+            retractBtn.classList.remove('hidden');
+        } else {
+            volunteerBtn.classList.remove('hidden');
         }
+    }
+    
+    reportDetailModal.classList.remove('hidden');
+}
 
         function closeModal() {
             reportDetailModal.classList.add('hidden');
