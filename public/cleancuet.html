@@ -413,7 +413,7 @@
             const reportId = retractBtn.dataset.id;
             if (reportId) {
                 try {
-                    await retractFromVolunteer(reportId);
+                    await retractFromVolunteering(reportId);
                     const reports = await fetchReports();
                     displayReports(reports);
                     displayVolunteerOpportunities(reports);
@@ -431,13 +431,47 @@
         // API Functions
         async function fetchReports() {
             try {
-                const response = await fetch('http://localhost:5000/api/reports');
-                if (!response.ok) throw new Error('Failed to fetch reports');
-                return await response.json();
+                const apiUrl = 'http://localhost:5000/api/reports';
+                console.log('Fetching reports from:', apiUrl);
+                
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('API error response:', errorText);
+                    throw new Error(errorText || 'Failed to fetch reports');
+                }
+                
+                const data = await response.json();
+                console.log('API response data:', data);
+                return data;
             } catch (error) {
                 console.error('Error fetching reports:', error);
-                showNotification('Failed to load reports', 'error');
-                return [];
+                showNotification('Failed to load reports. Please check your connection.', 'error');
+                
+                // Return test data if API fails (for development only)
+                return [
+                    {
+                        _id: 'test1',
+                        location: 'Academic Building 1',
+                        description: 'Test description 1',
+                        status: 'Pending',
+                        createdAt: new Date().toISOString(),
+                        volunteers: [],
+                        reporter: { name: 'Test User 1' },
+                        image: ''
+                    },
+                    {
+                        _id: 'test2',
+                        location: 'Library',
+                        description: 'Test description 2 with longer text to test the description field truncation in the card view',
+                        status: 'Completed',
+                        createdAt: new Date(Date.now() - 86400000).toISOString(),
+                        volunteers: ['user123', 'user456'],
+                        reporter: { name: 'Test User 2' },
+                        image: ''
+                    }
+                ];
             }
         }
 
@@ -461,43 +495,78 @@
             }
         }
 
-        async function volunteerForCleanup(reportId) {
-            try {
-                const token = localStorage.getItem('token');
-                const response = await fetch(`http://localhost:5000/api/reports/${reportId}/volunteer`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-auth-token': token
-                    }
-                });
-                
-                if (!response.ok) throw new Error('Failed to volunteer');
-                return await response.json();
-            } catch (error) {
-                console.error('Error volunteering:', error);
-                throw error;
-            }
+      async function volunteerForCleanup(reportId) {
+    try {
+        const token = localStorage.getItem('token');
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        
+        // Simplified user check - just ensure we have some user data
+        if (!currentUser) {
+            throw new Error('Please login first');
         }
 
-        async function retractFromVolunteer(reportId) {
-            try {
-                const token = localStorage.getItem('token');
-                const response = await fetch(`http://localhost:5000/api/reports/${reportId}/retract`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-auth-token': token
-                    }
-                });
-                
-                if (!response.ok) throw new Error('Failed to retract volunteer');
-                return await response.json();
-            } catch (error) {
-                console.error('Error retracting volunteer:', error);
-                throw error;
-            }
+        // Use the user's name directly (no need for ID in this simplified version)
+        const userName = currentUser.name || 'Anonymous';
+
+        const response = await fetch(`http://localhost:5000/api/reports/${reportId}/volunteer`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': token || '' // Send empty string if no token
+            },
+            body: JSON.stringify({ 
+                userName: userName 
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to volunteer');
         }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Volunteer error:', error);
+        showNotification(error.message || 'Volunteer action failed', 'error');
+        throw error;
+    }
+}
+
+
+
+
+        async function retractFromVolunteering(reportId) {
+    try {
+        const token = localStorage.getItem('token');
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        
+        // Simplified user check
+        if (!currentUser) {
+            throw new Error('Please login first');
+        }
+
+        // Use the user's name directly
+        const userName = currentUser.name || 'Anonymous';
+
+        const response = await fetch(`http://localhost:5000/api/reports/${reportId}/retract`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-auth-token': token || '' // Send empty string if no token
+            },
+            body: JSON.stringify({ userName: userName })
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to retract');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Retract error:', error);
+        showNotification(error.message || 'Retract action failed', 'error');
+        throw error;
+    }
+}
 
         // App Functions
         async function initializeApp() {
@@ -518,10 +587,9 @@
                 reportCard.className = 'bg-white rounded-lg shadow-md overflow-hidden report-card transition duration-300 cursor-pointer';
                 reportCard.dataset.id = report._id;
                 
-                // Use the actual image if available, otherwise create a placeholder
                 const imageContent = report.image ? 
                     `<img src="${report.image}" class="w-full h-48 object-cover" alt="${report.location}">` : 
-                    createSampleSVG(report.location, getRandomColor());
+                    `<div class="w-full h-48 flex items-center justify-center bg-gray-100 text-4xl font-bold text-gray-400">${report.location.charAt(0).toUpperCase()}</div>`;
                 
                 reportCard.innerHTML = `
                     <div class="h-48 overflow-hidden">
@@ -529,22 +597,23 @@
                     </div>
                     <div class="p-4">
                         <div class="flex justify-between items-start">
-                            <h3 class="font-semibold text-gray-800">${report.location}</h3>
-                            <span class="text-xs px-2 py-1 rounded-full ${getStatusClass(report.status)}">${report.status}</span>
+                            <h3 class="font-semibold text-gray-800">${report.location || 'Unknown Location'}</h3>
+                            <span class="text-xs px-2 py-1 rounded-full ${getStatusClass(report.status)}">${report.status || 'Unknown'}</span>
                         </div>
-                        <p class="text-gray-600 text-sm mt-2 line-clamp-2">${report.description}</p>
+                        <p class="text-gray-600 text-sm mt-2 line-clamp-2">${report.description || 'No description provided'}</p>
                         <div class="mt-4 flex justify-between items-center">
-                            <span class="text-xs text-gray-500">${formatDate(report.createdAt)}</span>
+                            <span class="text-xs text-gray-500">${report.createdAt ? formatDate(report.createdAt) : 'Date not available'}</span>
                             <span class="text-sm text-teal-600 font-medium">View Details</span>
                         </div>
                     </div>
                 `;
-                reportsContainer.appendChild(reportCard);
                 
-                // Add event listener to the entire card
+                // Add click event listener
                 reportCard.addEventListener('click', () => {
                     openReportDetail(report);
                 });
+                
+                reportsContainer.appendChild(reportCard);
             });
         }
 
@@ -556,10 +625,9 @@
                 reportCard.className = 'bg-white rounded-lg shadow-md overflow-hidden report-card transition duration-300 cursor-pointer';
                 reportCard.dataset.id = report._id;
                 
-                // Use the actual image if available, otherwise create a placeholder
                 const imageContent = report.image ? 
                     `<img src="${report.image}" class="w-full h-48 object-cover" alt="${report.location}">` : 
-                    createSampleSVG(report.location, getRandomColor());
+                    `<div class="w-full h-48 flex items-center justify-center bg-gray-100 text-4xl font-bold text-gray-400">${report.location.charAt(0).toUpperCase()}</div>`;
                 
                 reportCard.innerHTML = `
                     <div class="h-48 overflow-hidden">
@@ -567,98 +635,112 @@
                     </div>
                     <div class="p-4">
                         <div class="flex justify-between items-start">
-                            <h3 class="font-semibold text-gray-800">${report.location}</h3>
-                            <span class="text-xs px-2 py-1 rounded-full ${getStatusClass(report.status)}">${report.status}</span>
+                            <h3 class="font-semibold text-gray-800">${report.location || 'Unknown Location'}</h3>
+                            <span class="text-xs px-2 py-1 rounded-full ${getStatusClass(report.status)}">${report.status || 'Unknown'}</span>
                         </div>
-                        <p class="text-gray-600 text-sm mt-2 line-clamp-2">${report.description}</p>
+                        <p class="text-gray-600 text-sm mt-2 line-clamp-2">${report.description || 'No description provided'}</p>
                         <div class="mt-3">
-                            <p class="text-xs text-gray-500">Volunteers: ${report.volunteers.length > 0 ? report.volunteers.length : 'None yet'}</p>
+                            <p class="text-xs text-gray-500">Volunteers: ${report.volunteers?.length > 0 ? report.volunteers.length : 'None yet'}</p>
                         </div>
                         <div class="mt-4 flex justify-between items-center">
-                            <span class="text-xs text-gray-500">${formatDate(report.createdAt)}</span>
+                            <span class="text-xs text-gray-500">${report.createdAt ? formatDate(report.createdAt) : 'Date not available'}</span>
                             <span class="px-3 py-1 bg-teal-600 text-white text-sm rounded-md">
                                 Volunteer
                             </span>
                         </div>
                     </div>
                 `;
-                volunteerReportsContainer.appendChild(reportCard);
                 
-                // Add event listener to the entire card
                 reportCard.addEventListener('click', () => {
                     openReportDetail(report);
                 });
+                
+                volunteerReportsContainer.appendChild(reportCard);
             });
         }
 
        function openReportDetail(report) {
-    document.getElementById('modalTitle').textContent = `Report: ${report.location}`;
-    
-    // Set image - use actual if available, otherwise placeholder
-    const modalImage = document.getElementById('modalImage');
-    if (report.image) {
-        modalImage.src = report.image;
-    } else {
-        // Create a data URL for the SVG
-        const svgString = createSampleSVG(report.location, getRandomColor());
-        modalImage.src = 'data:image/svg+xml;base64,' + btoa(svgString);
-    }
-    
-    document.getElementById('modalLocation').textContent = report.location;
-    document.getElementById('modalDescription').textContent = report.description;
-    document.getElementById('modalReporter').textContent = report.reporter ? report.reporter.name : 'Anonymous';
-    document.getElementById('modalDate').textContent = formatDate(report.createdAt);
-    document.getElementById('modalStatus').textContent = report.status;
-    
-    const volunteersList = document.getElementById('volunteersList');
-    volunteersList.innerHTML = '';
-    
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    let isCurrentUserVolunteer = false;
-    
-    if (report.volunteers && report.volunteers.length > 0) {
-        report.volunteers.forEach(volunteer => {
-            const li = document.createElement('li');
-            // Check if volunteer is an object or just an ID string
-            if (typeof volunteer === 'object') {
-                li.textContent = volunteer.name;
-                // Compare with current user ID
-                if (currentUser && volunteer._id === currentUser._id) {
-                    isCurrentUserVolunteer = true;
-                }
-            } else {
-                // If it's just an ID string
-                if (currentUser && volunteer === currentUser._id) {
-                    isCurrentUserVolunteer = true;
-                    li.textContent = currentUser.name + ' (You)';
-                } else {
-                    li.textContent = 'Volunteer ID: ' + volunteer;
-                }
+    try {
+        console.log('Opening report:', report);
+
+        // Get all modal elements
+        const modal = document.getElementById('reportDetailModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalLocation = document.getElementById('modalLocation');
+        const modalDescription = document.getElementById('modalDescription');
+        const modalReporter = document.getElementById('modalReporter');
+        const modalDate = document.getElementById('modalDate');
+        const modalStatus = document.getElementById('modalStatus');
+        const volunteersList = document.getElementById('volunteersList');
+        const volunteerBtn = document.getElementById('volunteerForCleanup');
+        const retractBtn = document.getElementById('retractVolunteer');
+
+        // Set basic report info
+        document.getElementById('modalTitle').textContent = `Report: ${report.location || 'Unknown Location'}`;
+        modalImage.src = report.image || 'https://via.placeholder.com/600x400.png?text=No+Image';
+        modalLocation.textContent = report.location || 'Location not specified';
+        modalDescription.textContent = report.description || 'No description provided';
+        modalReporter.textContent = report.reporter?.name || 'Anonymous';
+        modalDate.textContent = report.createdAt ? formatDate(report.createdAt) : 'Date not available';
+        modalStatus.textContent = report.status || 'Unknown status';
+
+        // Handle volunteers list
+        volunteersList.innerHTML = '';
+        
+        // Simplified volunteer check
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        let isCurrentUserVolunteer = false;
+
+        if (report.volunteers && Array.isArray(report.volunteers)) {
+            // Add volunteers to list
+            report.volunteers.forEach(volunteer => {
+                const li = document.createElement('li');
+                li.textContent = typeof volunteer === 'object' ? volunteer.name : volunteer;
+                volunteersList.appendChild(li);
+            });
+
+            // Check if current user is a volunteer
+            if (currentUser) {
+                const currentUserName = currentUser.name?.toLowerCase().trim();
+                isCurrentUserVolunteer = report.volunteers.some(volunteer => {
+                    const volunteerName = typeof volunteer === 'object' 
+                        ? volunteer.name?.toLowerCase().trim()
+                        : String(volunteer).toLowerCase().trim();
+                    return volunteerName === currentUserName;
+                });
             }
-            volunteersList.appendChild(li);
-        });
-    } else {
-        const li = document.createElement('li');
-        li.textContent = 'No volunteers yet';
-        volunteersList.appendChild(li);
-    }
-    
-    // Set appropriate button visibility
-    volunteerBtn.classList.add('hidden');
-    retractBtn.classList.add('hidden');
-    volunteerBtn.dataset.id = report._id;
-    retractBtn.dataset.id = report._id;
-    
-    if (currentUser) {
-        if (isCurrentUserVolunteer) {
-            retractBtn.classList.remove('hidden');
-        } else {
-            volunteerBtn.classList.remove('hidden');
         }
+
+        // Update buttons
+        volunteerBtn.classList.add('hidden');
+        retractBtn.classList.add('hidden');
+        
+        if (report._id) {
+            volunteerBtn.dataset.id = report._id;
+            retractBtn.dataset.id = report._id;
+            
+            if (isCurrentUserVolunteer) {
+                retractBtn.classList.remove('hidden');
+                console.log('Showing RETRACT button');
+            } else {
+                volunteerBtn.classList.remove('hidden');
+                console.log('Showing VOLUNTEER button');
+            }
+        }
+        
+        // Show modal
+        modal.classList.remove('hidden');
+        
+    } catch (error) {
+        console.error('Error in openReportDetail:', error);
+        showNotification('Failed to open report details. Please try again.', 'error');
     }
-    
-    reportDetailModal.classList.remove('hidden');
 }
+
+
+
+
+
 
         function closeModal() {
             reportDetailModal.classList.add('hidden');
@@ -787,24 +869,19 @@
         }
 
         function showNotification(message, type = 'success') {
-            const notificationElement = document.getElementById('notification');
+            const notification = document.getElementById('notification');
             const messageElement = document.getElementById('notificationMessage');
             
+            if (!notification || !messageElement) return;
+            
             messageElement.textContent = message;
-            
-            if (type === 'error') {
-                notificationElement.classList.remove('bg-green-600');
-                notificationElement.classList.add('bg-red-600');
-            } else {
-                notificationElement.classList.remove('bg-red-600');
-                notificationElement.classList.add('bg-green-600');
-            }
-            
-            notificationElement.classList.remove('translate-y-20', 'opacity-0');
+            notification.className = `fixed bottom-4 right-4 text-white px-6 py-3 rounded-md shadow-lg transform transition-transform duration-300 flex items-center ${type === 'error' ? 'bg-red-600' : 'bg-green-600'}`;
             
             setTimeout(() => {
-                notificationElement.classList.add('translate-y-20', 'opacity-0');
+                notification.classList.add('translate-y-20', 'opacity-0');
             }, 3000);
+            
+            notification.classList.remove('translate-y-20', 'opacity-0');
         }
 
         function getStatusClass(status) {
@@ -821,9 +898,20 @@
         }
 
         function formatDate(dateString) {
-            const date = new Date(dateString);
-            const options = { year: 'numeric', month: 'short', day: 'numeric' };
-            return date.toLocaleDateString(undefined, options);
+            if (!dateString) return 'Date not available';
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            } catch (e) {
+                console.error('Error formatting date:', e);
+                return 'Invalid date';
+            }
         }
 
         function getRandomColor() {
@@ -832,7 +920,7 @@
         }
 
         function createSampleSVG(location, color) {
-            const locationFirstLetter = location.charAt(0).toUpperCase();
+            const locationFirstLetter = location?.charAt(0).toUpperCase() || '?';
             
             return `
             <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 400 300">
@@ -840,7 +928,7 @@
                 <rect x="0" y="200" width="400" height="100" fill="${color}" opacity="0.3" />
                 <circle cx="350" cy="50" r="30" fill="${color}" opacity="0.6" />
                 <text x="200" y="150" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="${color}">${locationFirstLetter}</text>
-                <text x="200" y="250" font-family="Arial" font-size="16" text-anchor="middle" fill="#333">${location}</text>
+                <text x="200" y="250" font-family="Arial" font-size="16" text-anchor="middle" fill="#333">${location || 'Unknown Location'}</text>
                 <g fill="none" stroke="#555" stroke-width="2">
                     <path d="M50,50 L100,50 L100,100 L50,100 Z" />
                     <path d="M150,70 L200,70 L200,100 L150,100 Z" />
