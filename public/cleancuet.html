@@ -579,43 +579,48 @@
             }
         }
 
-        function displayReports(reports) {
-            reportsContainer.innerHTML = '';
-            
-            reports.forEach(report => {
-                const reportCard = document.createElement('div');
-                reportCard.className = 'bg-white rounded-lg shadow-md overflow-hidden report-card transition duration-300 cursor-pointer';
-                reportCard.dataset.id = report._id;
-                
-                const imageContent = report.image ? 
-                    `<img src="${report.image}" class="w-full h-48 object-cover" alt="${report.location}">` : 
-                    `<div class="w-full h-48 flex items-center justify-center bg-gray-100 text-4xl font-bold text-gray-400">${report.location.charAt(0).toUpperCase()}</div>`;
-                
-                reportCard.innerHTML = `
-                    <div class="h-48 overflow-hidden">
-                        ${imageContent}
-                    </div>
-                    <div class="p-4">
-                        <div class="flex justify-between items-start">
-                            <h3 class="font-semibold text-gray-800">${report.location || 'Unknown Location'}</h3>
-                            <span class="text-xs px-2 py-1 rounded-full ${getStatusClass(report.status)}">${report.status || 'Unknown'}</span>
-                        </div>
-                        <p class="text-gray-600 text-sm mt-2 line-clamp-2">${report.description || 'No description provided'}</p>
-                        <div class="mt-4 flex justify-between items-center">
-                            <span class="text-xs text-gray-500">${report.createdAt ? formatDate(report.createdAt) : 'Date not available'}</span>
-                            <span class="text-sm text-teal-600 font-medium">View Details</span>
-                        </div>
-                    </div>
-                `;
-                
-                // Add click event listener
-                reportCard.addEventListener('click', () => {
-                    openReportDetail(report);
-                });
-                
-                reportsContainer.appendChild(reportCard);
-            });
-        }
+      function displayReports(reports) {
+    reportsContainer.innerHTML = '';
+    
+    reports.forEach(report => {
+        const reportCard = document.createElement('div');
+        reportCard.className = 'bg-white rounded-lg shadow-md overflow-hidden report-card transition duration-300 cursor-pointer';
+        reportCard.dataset.id = report._id;
+        
+        // Use the actual image if available, otherwise create a colored SVG placeholder
+        const imageContent = report.image && isValidImageUrl(report.image) 
+            ? `<img src="${report.image}" class="w-full h-48 object-cover" alt="${report.location}" 
+                onerror="this.onerror=null;this.parentNode.innerHTML='${createSampleSVG(report.location, getRandomColor())}'">` 
+            : createSampleSVG(report.location, getRandomColor());
+        
+        reportCard.innerHTML = `
+            <div class="h-48 overflow-hidden">
+                ${imageContent}
+            </div>
+            <div class="p-4">
+                <div class="flex justify-between items-start">
+                    <h3 class="font-semibold text-gray-800">${report.location || 'Unknown Location'}</h3>
+                    <span class="text-xs px-2 py-1 rounded-full ${getStatusClass(report.status)}">${report.status || 'Unknown'}</span>
+                </div>
+                <p class="text-gray-600 text-sm mt-2 line-clamp-2">${report.description || 'No description provided'}</p>
+                <div class="mt-4 flex justify-between items-center">
+                    <span class="text-xs text-gray-500">${report.createdAt ? formatDate(report.createdAt) : 'Date not available'}</span>
+                    <span class="text-sm text-teal-600 font-medium">View Details</span>
+                </div>
+            </div>
+        `;
+        
+        reportCard.addEventListener('click', () => {
+            openReportDetail(report);
+        });
+        
+        reportsContainer.appendChild(reportCard);
+    });
+}
+
+
+
+
 
         function displayVolunteerOpportunities(reports) {
             volunteerReportsContainer.innerHTML = '';
@@ -915,34 +920,33 @@
         }
 
         function getRandomColor() {
-            const colors = ['#0ea5e9', '#22c55e', '#f97316', '#8b5cf6', '#ec4899', '#14b8a6'];
-            return colors[Math.floor(Math.random() * colors.length)];
-        }
+    const colors = ['#0ea5e9', '#22c55e', '#f97316', '#8b5cf6', '#ec4899', '#14b8a6'];
+    return colors[Math.floor(Math.random() * colors.length)];
+}
 
-        function createSampleSVG(location, color) {
-            const locationFirstLetter = location?.charAt(0).toUpperCase() || '?';
-            
-            return `
-            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 400 300">
-                <rect width="400" height="300" fill="${color}" opacity="0.2" />
-                <rect x="0" y="200" width="400" height="100" fill="${color}" opacity="0.3" />
-                <circle cx="350" cy="50" r="30" fill="${color}" opacity="0.6" />
-                <text x="200" y="150" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="${color}">${locationFirstLetter}</text>
-                <text x="200" y="250" font-family="Arial" font-size="16" text-anchor="middle" fill="#333">${location || 'Unknown Location'}</text>
-                <g fill="none" stroke="#555" stroke-width="2">
-                    <path d="M50,50 L100,50 L100,100 L50,100 Z" />
-                    <path d="M150,70 L200,70 L200,100 L150,100 Z" />
-                    <path d="M250,50 L300,50 L300,90 L250,90 Z" />
-                </g>
-                <g fill="${color}" opacity="0.4">
-                    <circle cx="75" cy="180" r="15" />
-                    <circle cx="125" cy="180" r="10" />
-                    <circle cx="165" cy="180" r="12" />
-                </g>
-            </svg>
-            `;
-        }
-
+function createSampleSVG(location, color) {
+    const locationFirstLetter = location?.charAt(0).toUpperCase() || '?';
+    
+    return `
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 400 300">
+        <rect width="400" height="300" fill="${color}" opacity="0.2" />
+        <rect x="0" y="200" width="400" height="100" fill="${color}" opacity="0.3" />
+        <circle cx="350" cy="50" r="30" fill="${color}" opacity="0.6" />
+        <text x="200" y="150" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="${color}">${locationFirstLetter}</text>
+        <text x="200" y="250" font-family="Arial" font-size="16" text-anchor="middle" fill="#333">${location || 'Unknown Location'}</text>
+        <g fill="none" stroke="#555" stroke-width="2">
+            <path d="M50,50 L100,50 L100,100 L50,100 Z" />
+            <path d="M150,70 L200,70 L200,100 L150,100 Z" />
+            <path d="M250,50 L300,50 L300,90 L250,90 Z" />
+        </g>
+        <g fill="${color}" opacity="0.4">
+            <circle cx="75" cy="180" r="15" />
+            <circle cx="125" cy="180" r="10" />
+            <circle cx="165" cy="180" r="12" />
+        </g>
+    </svg>
+    `;
+}
         function logout() {
             localStorage.removeItem('token');
             localStorage.removeItem('currentUser');
