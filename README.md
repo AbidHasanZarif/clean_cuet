@@ -1,10 +1,10 @@
-# 🧹 CUET CleanCampus
+# CUET CleanCampus
 
 A simple web application for CUET students to report messy areas on campus and volunteer for cleanup activities.
 
 ---
 
-## 📌 Description
+## Description
 
 **CUET CleanCampus** helps students keep the campus clean by allowing them to:
 - Report dirty locations with photos.
@@ -16,17 +16,17 @@ The goal is to promote responsibility and teamwork among CUET students.
 
 ---
 
-## 🚀 Features
+## Features
 
-- 📸 Report unclean areas with images  
-- 🤝 Volunteer for cleanup tasks  
-- 📊 Track cleanup status  
-- 🔐 Student authentication system  
-- 📱 Simple and responsive UI  
+-  Report unclean areas with images  
+-  Volunteer for cleanup tasks  
+-  Track cleanup status  
+-  Student authentication system  
+-  Simple and responsive UI  
 
 ---
 
-## 🛠 Tech Stack
+##  Tech Stack
 
 **Backend**
 - Node.js  
@@ -44,7 +44,7 @@ The goal is to promote responsibility and teamwork among CUET students.
 
 ---
 
-## ⚙️ Requirements
+##  Requirements
 
 Make sure you have:
 
@@ -54,7 +54,7 @@ Make sure you have:
 
 ---
 
-## 📥 Installation
+##  Installation
 
 Clone the project and install dependencies:
 
