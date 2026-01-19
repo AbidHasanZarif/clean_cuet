@@ -1,44 +1,63 @@
-**CUET CleanCampus Initiative**
-A full-stack web application designed to promote and manage campus cleanliness initiatives at Chittagong University of Engineering & Technology (CUET).
-The platform allows students to report unclean areas and volunteer for cleanup activities
+# 🧹 CUET CleanCampus
 
-Features
-User Authentication
-Student registration with comprehensive profile information
+A simple web application for CUET students to report messy areas on campus and volunteer for cleanup activities.
 
-Secure login/logout functionality using JWT tokens
+---
 
-Session persistence across browser sessions
+## 📌 Description
 
-Report System
-Submit reports for unclean areas with:
+**CUET CleanCampus** helps students keep the campus clean by allowing them to:
+- Report dirty locations with photos.
+- Volunteer for cleanup drives.
+- Track cleanup progress.
+- Use a secure student login system.
 
-Location selection (academic buildings, halls, library, etc.)
+The goal is to promote responsibility and teamwork among CUET students.
 
-Detailed description
+---
 
-Photo capture using device camera
+## 🚀 Features
 
-View all submitted reports in a clean, responsive interface
+- 📸 Report unclean areas with images  
+- 🤝 Volunteer for cleanup tasks  
+- 📊 Track cleanup status  
+- 🔐 Student authentication system  
+- 📱 Simple and responsive UI  
 
-Report status tracking (Pending, In Progress, Completed)
+---
 
-Volunteer Management
-Browse available cleanup opportunities
+## 🛠 Tech Stack
 
-Volunteer for specific cleanup tasks
+**Backend**
+- Node.js  
+- Express.js  
+- MongoDB  
 
-Retract volunteer status if needed
+**Frontend**
+- HTML  
+- CSS  
+- JavaScript  
+- Tailwind CSS  
 
-Track volunteer participation
+**Tools**
+- JWT Authentication  
 
-User-Friendly Interface
-Responsive design using Tailwind CSS
+---
 
-Interactive sidebar navigation
+## ⚙️ Requirements
 
-Modal-based report details view
+Make sure you have:
 
-Camera integration for photo capture
+- Node.js installed  
+- MongoDB running  
+- A modern web browser  
 
-Real-time notifications
+---
+
+## 📥 Installation
+
+Clone the project and install dependencies:
+
+```bash
+npm install
+npm start
