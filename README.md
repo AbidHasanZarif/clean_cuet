@@ -2,7 +2,6 @@
 
 A simple web application for CUET students to report messy areas on campus and volunteer for cleanup activities.
 
----
 
 ## Description
 
@@ -14,7 +13,6 @@ A simple web application for CUET students to report messy areas on campus and v
 
 The goal is to promote responsibility and teamwork among CUET students.
 
----
 
 ## Features
 
@@ -24,7 +22,6 @@ The goal is to promote responsibility and teamwork among CUET students.
 -  Student authentication system  
 -  Simple and responsive UI  
 
----
 
 ##  Tech Stack
 
@@ -42,7 +39,6 @@ The goal is to promote responsibility and teamwork among CUET students.
 **Tools**
 - JWT Authentication  
 
----
 
 ##  Requirements
 
@@ -52,7 +48,6 @@ Make sure you have:
 - MongoDB running  
 - A modern web browser  
 
----
 
 ##  Installation
 
